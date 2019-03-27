@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:title="Log out"
+        android:id="@+id/menuLogout"
+        app:showAsAction="never" />
+
+    <item
+        android:title="All Users"
+        android:id="@+id/menuAllUsers"
+        app:showAsAction="never" />
+
+    <item
+        android:title="Account Details"
+        android:id="@+id/accountDetails"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/menuProfile"
+        android:icon="@drawable/ic_tag_faces_black_24dp"
+        android:title="Profile"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menuLocation"
+        android:icon="@drawable/ic_pin_drop_black_24dp"
+        android:title="Location"
+        app:showAsAction="ifRoom"/>
+
+
+</menu>

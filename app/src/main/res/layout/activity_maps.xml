@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsActivity"
+    android:background="@color/lightNavy"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/place_info"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/ic_place_black_24dp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/place_picker"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/place_info"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/ic_info_black_24dp"/>
+
+        <EditText
+            android:id="@+id/editSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:textColorHint="@color/colorAccent"
+            android:hint="Enter Location:" />
+
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="onMapSearch"
+            android:background="@color/colorAccent"
+            android:text="Search" />
+
+
+    </LinearLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:context=".MapsActivity">
+
+
+    </fragment>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnListLoc"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="onListLocation"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:text="Listed Locations"></Button>
+
+        <Button
+            android:id="@+id/btnMoreInfo"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_margin="10dp"
+            android:onClick="onMoreInfo"
+            android:background="@color/colorAccent"
+            android:text="Nearby Places"></Button>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
+

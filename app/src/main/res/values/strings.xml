@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TravelFYP</string>
+    <string name="title_activity_maps">Map</string>
+
+
+    <string-array name="mapOptions">
+        <item>Save Location</item>
+        <item>Add To List</item>
+        <item>More Info</item>
+    </string-array>
+
+    <string name="title_activity_friend_maps">Friends Map</string>
+    <string name="title_activity_nearby_locations">Map</string>
+
+</resources>
