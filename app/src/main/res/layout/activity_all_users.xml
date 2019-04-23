@@ -17,6 +17,11 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,13 +39,28 @@
         android:id="@+id/btnAllFriendsMap"
         android:background="@color/colorAccent"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="15dp"
-        android:textColor="@color/colorAccent"
-        android:id="@+id/recyclerUsers">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerUsers"
+            android:layout_width="match_parent"
+            android:layout_height="369dp"
+            android:padding="15dp"
+            android:textColor="@color/colorAccent">
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.design.widget.BottomNavigationView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navigation"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_toolbar" />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
+

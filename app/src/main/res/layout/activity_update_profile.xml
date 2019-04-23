@@ -80,7 +80,7 @@
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:text="Change Profile Image"
             android:textAllCaps="false"
             android:textColor="@color/colorAccent" />
@@ -90,12 +90,22 @@
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:text="Update Account Details"
             android:textAllCaps="false"
             android:textColor="@color/colorAccent" />
 
+        <android.support.design.widget.BottomNavigationView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navigation"
+            android:background="@color/colorAccent"
+            android:layout_width="370dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_toolbar" />
+
 
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

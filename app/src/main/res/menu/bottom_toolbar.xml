@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/btmProfile"
+        android:icon="@drawable/ic_tag_faces_black_24dp"
+        android:title="Profile"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/btmLocation"
+        android:icon="@drawable/ic_pin_drop_black_24dp"
+        android:title="Location"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/btmFriends"
+        android:icon="@drawable/ic_people_black_24dp"
+        android:title="Friends"
+        app:showAsAction="always"/>
+
+</menu>

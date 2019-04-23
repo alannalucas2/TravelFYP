@@ -45,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button buttonSave;
     EditText editName;
 
-    Uri uriProfileImage;
+    Uri uriItemImage;
     String profileImageUrl;
 
     FirebaseAuth mAuth;
@@ -138,10 +138,10 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            uriProfileImage = data.getData();
+            uriItemImage = data.getData();
 
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriProfileImage);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriItemImage);
                 imageView.setImageBitmap(bitmap);
 
                 uploadImageToFirebaseStorage();
@@ -157,8 +157,8 @@ public class ProfileActivity extends AppCompatActivity {
         final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
 
 
-        if (uriProfileImage != null) {
-            profileImageRef.putFile(uriProfileImage)
+        if (uriItemImage != null) {
+            profileImageRef.putFile(uriItemImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

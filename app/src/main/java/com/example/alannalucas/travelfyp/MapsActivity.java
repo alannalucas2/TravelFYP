@@ -115,6 +115,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*Toolbar navView = findViewById(R.id.navigationView);
+        setSupportActionBar(navView);*/
+
 
         ChildEventListener mChildEventListener;
 
@@ -240,29 +243,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
         mMap.setMyLocationEnabled(true);
 
-        mLocations.child(userID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s:dataSnapshot.getChildren()){
-                    LocationInformation user = s.getValue(LocationInformation.class);
-                    LatLng location = new LatLng(user.latitude, user.longitude);
+        /*mLocations.child(userID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               for (DataSnapshot s : dataSnapshot.getChildren()) {
+                   LocationInformation user = s.getValue(LocationInformation.class);
+                   LatLng location = new LatLng(user.latitude, user.longitude);
 
-                    //Toast.makeText(MapsActivity.this, Double.toString(user.latitude), Toast.LENGTH_LONG).show();
+                   //Toast.makeText(MapsActivity.this, Double.toString(user.latitude), Toast.LENGTH_LONG).show();
 
 
-                    mMap.addMarker(new MarkerOptions().position(location).title(user.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                   mMap.addMarker(new MarkerOptions().position(location).title(user.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                    mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
-                }
-            }
+                   mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                   mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+               }
+           }
+
+
+
 
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
 
 
 
@@ -421,6 +428,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.menuLocation:
                 Intent intent2 = new Intent(this, MapsActivity.class);
                 this.startActivity(intent2);
+                break;
+
+            case R.id.listOnline:
+                Intent intent4 = new Intent(this, ListOnline.class);
+                this.startActivity(intent4);
                 break;
 
         }

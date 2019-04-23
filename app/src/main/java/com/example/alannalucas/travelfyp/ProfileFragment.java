@@ -1,24 +1,23 @@
-package com.example.alannalucas.travelfyp;
+/*package com.example.alannalucas.travelfyp;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,14 +27,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
 import java.util.Date;
 
-public class ProfilePage extends AppCompatActivity {
+
+
+public class ProfileFragment extends Fragment {
 
     TextView mDisplayName, mDisplayAddress, mTotalFriends;
     Button mBtnAddFriend, mBtnDeclineFriend, mBtnFriendMap;
@@ -43,25 +41,31 @@ public class ProfilePage extends AppCompatActivity {
 
     private String mCurrent_state;
 
-    private BottomNavigationView mBottomNav;
-
     private DatabaseReference mUsersDatabase;
     private DatabaseReference mFriendRequestDatabase;
     private DatabaseReference mFriendDatabase;
     private FirebaseUser mCurrent_user;
 
 
-
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_page);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+
+
+
+
 
         final String user_id = getIntent().getStringExtra("user_id");
 
-        mTotalFriends = (TextView) findViewById(R.id.totalFriends);
+        mTotalFriends = (TextView) addfindViewById(R.id.totalFriends);
         mDisplayAddress = (TextView) findViewById(R.id.displayName);
         mDisplayName = (TextView) findViewById(R.id.displayAddress);
         mBtnAddFriend = (Button) findViewById(R.id.btnAddFriend);
@@ -78,14 +82,6 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
-        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
-        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                selectNavigation(item);
-                return true;
-            }
-        });
 
         mBtnFriendMap.setVisibility(View.GONE);
 
@@ -286,27 +282,6 @@ public class ProfilePage extends AppCompatActivity {
 
     }
 
-    private void selectNavigation(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.btmFriends:
-                Intent intent = new Intent(this, AllUsers.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.btmLocation:
-                Intent intent1 = new Intent(this, NearbyLocations.class);
-                this.startActivity(intent1);
-                break;
-
-            case R.id.btmProfile:
-                Intent intent3 = new Intent(this, ProfilePage.class);
-                this.startActivity(intent3);
-                break;
-
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -362,3 +337,4 @@ public class ProfilePage extends AppCompatActivity {
 
 
 }
+*/

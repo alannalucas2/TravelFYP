@@ -10,6 +10,7 @@ import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -24,6 +25,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import com.google.android.libraries.places.api.Places;
+
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Api;
@@ -43,6 +49,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteFragment;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +60,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -64,33 +74,43 @@ public class NearbyLocations extends AppCompatActivity implements
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
-    private String name;
+    private String name, selPlace;
     private double latitude, longitude;
     private Marker currentUserLocationMarker;
     private static final int Request_User_Location_Code = 99;
     private ImageButton mStar, mHeart;
+    private LatLng selPlaceLatLng;
+    private String apiKey = "AIzaSyAiXcwMQY9v2ba4GvxLPsF_G-FPUJA5DUU";
+    private BottomNavigationView mBottomNav;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference databaseLocations;
+    private DatabaseReference saveLocations;
 
     private int ProximityRadius = 10000;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nearby_locations2);
+        setContentView(R.layout.activity_nearby_locations);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkUserLocationPermission();
         }
 
+        Places.initialize(getApplicationContext(), apiKey);
+
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        databaseLocations = mFirebaseDatabase.getReference();
+        saveLocations = mFirebaseDatabase.getReference();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,12 +123,21 @@ public class NearbyLocations extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
 
         mStar = (ImageButton) findViewById(R.id.btnStar);
-        mHeart = (ImageButton) findViewById(R.id.btnHeart);
+        //mHeart = (ImageButton) findViewById(R.id.btnHeart);
 
 
         mStar.setVisibility(View.GONE);
-        mHeart.setVisibility(View.GONE);
+        //mHeart.setVisibility(View.GONE);
 
+
+        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectNavigation(item);
+                return true;
+            }
+        });
 
 
 
@@ -130,7 +159,7 @@ public class NearbyLocations extends AppCompatActivity implements
 
         //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION))
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
 
             buildGoogleApiClient();
@@ -138,34 +167,65 @@ public class NearbyLocations extends AppCompatActivity implements
             mMap.setMyLocationEnabled(true);
         }
 
+
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
                 mStar.setVisibility(View.VISIBLE);
-                mHeart.setVisibility(View.VISIBLE);
 
+                latitude = marker.getPosition().latitude;
+                longitude = marker.getPosition().longitude;
                 return false;
+
             }
         });
 
-        mStar.setOnClickListener(new View.OnClickListener() {
+
+
+        /*AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(NearbyLocations.this, "Rating......", Toast.LENGTH_SHORT).show();
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
             }
-        });
 
-        mHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });*/
+
+
+
+       /*mStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //LocationInformation locInfo = new LocationInformation(name, latitude, longitude);
+
+                //Toast.makeText(NearbyLocations.this, "Rating......", Toast.LENGTH_SHORT).show();
+
+                /*latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+
+
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+
+                LocationInformation locInfo = new LocationInformation(name, latitude, longitude);
+
 
                 FirebaseUser user = mAuth.getCurrentUser();
                 String userID = user.getUid();
-                databaseLocations.child(userID).child("Locations").child(name).setValue(locInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                   @Override
+                saveLocations.child(userID).child("Locations").setValue(locInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(NearbyLocations.this, "Location saved", Toast.LENGTH_LONG).show();
                     }
@@ -180,10 +240,104 @@ public class NearbyLocations extends AppCompatActivity implements
 
 
             }
-        });
+        });*/
+
+
 
 
     }
+
+
+    private void selectNavigation(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.btmFriends:
+                Intent intent = new Intent(this, AllUsers.class);
+                this.startActivity(intent);
+                break;
+
+            case R.id.btmLocation:
+                Intent intent1 = new Intent(this, NearbyLocations.class);
+                this.startActivity(intent1);
+                break;
+
+            case R.id.btmProfile:
+                Intent intent3 = new Intent(this, ProfilePage.class);
+                this.startActivity(intent3);
+                break;
+
+        }
+    }
+
+    public void starClick(Marker marker){
+
+        LatLng latLng = new LatLng(marker.getPosition().latitude, marker.getPosition().longitude);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userID = user.getUid();
+        saveLocations.child(userID).child("Locations").child(name).setValue(latLng).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(NearbyLocations.this, "Location saved", Toast.LENGTH_LONG).show();
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(NearbyLocations.this, "Error location not saved", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
+    }
+
+
+    /*public void heartClick(Marker marker) {
+
+
+        Toast.makeText(NearbyLocations.this, "savig......", Toast.LENGTH_SHORT).show();
+    }
+
+
+         /*latitude = marker.getPosition().latitude;
+         longitude = marker.getPosition().longitude;
+
+        LocationInformation locInfo = new LocationInformation(name, latitude, longitude);
+
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userID = user.getUid();
+        saveLocations.child(userID).child("Locations").setValue(locInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(NearbyLocations.this, "Location saved", Toast.LENGTH_LONG).show();
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(NearbyLocations.this, "Error location not saved", Toast.LENGTH_LONG).show();
+
+                    }
+                });*/
+
+
+    /*public void pinClick(){
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Clicked Location"));
+
+            }
+        });
+
+    }*/
+
+
 
 
 
@@ -282,7 +436,7 @@ public class NearbyLocations extends AppCompatActivity implements
 
         switch (v.getId())
         {
-            case R.id.search_address:
+            /*case R.id.search_address:
                 EditText addressField = (EditText) findViewById(R.id.location_search);
                 String address = addressField.getText().toString();
 
@@ -326,7 +480,7 @@ public class NearbyLocations extends AppCompatActivity implements
                 {
                     Toast.makeText(this, "please write any location name...", Toast.LENGTH_SHORT).show();
                 }
-                break;
+                break;*/
 
 
             case R.id.hotels_nearby:

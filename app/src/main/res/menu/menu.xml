@@ -18,6 +18,11 @@
         android:id="@+id/accountDetails"
         app:showAsAction="never" />
 
+    <item
+        android:title="Whos Online?"
+        android:id="@+id/listOnline"
+        app:showAsAction="never" />
+
 
     <item
         android:id="@+id/menuProfile"

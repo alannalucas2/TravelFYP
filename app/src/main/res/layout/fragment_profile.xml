@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/lightNavy"
-    tools:context=".ProfilePage">
+    android:background="@color/lightNavy">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -52,16 +51,23 @@
         android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/displayAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorPrimaryDark"
-        android:text="Address" />
+        <TextView
+            android:id="@+id/displayAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Address" />
 
-
+        <TextView
+            android:id="@+id/totalFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Total Friends" />
 
     </LinearLayout>
 
@@ -72,44 +78,35 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnFriendMap"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:background="@color/colorAccent"
-        android:text="View Users's Locations" />
+        <Button
+            android:id="@+id/btnFriendMap"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:text="View Users's Locations" />
 
 
-    <Button
-        android:id="@+id/btnAddFriend"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:background="@color/colorAccent"
-        android:text="Send Friend Request" />
+        <Button
+            android:id="@+id/btnAddFriend"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:text="Send Friend Request" />
 
-    <Button
-        android:id="@+id/btnDeclineFriend"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:background="@color/colorAccent"
-        android:text="Decline Friend Request" />
+        <Button
+            android:id="@+id/btnDeclineFriend"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:text="Decline Friend Request" />
 
     </LinearLayout>
 
-    <android.support.design.widget.BottomNavigationView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/navigation"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        app:menu="@menu/bottom_toolbar" />
 
 </LinearLayout>
