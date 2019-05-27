@@ -10,7 +10,7 @@
     tools:openDrawer="start">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -24,14 +24,27 @@
             android:popupTheme="@style/Theme.AppCompat.Light"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        </android.support.v7.widget.Toolbar>
-
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_below="@+id/toolbar"/>
 
-    </LinearLayout>
+
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+
+    </RelativeLayout>
+
+
+
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

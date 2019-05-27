@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#FF8A2E</color>
     <color name="colorAccent">#FF2AB1</color>
     <color name="lightNavy">#2F3246</color>
+    <color name="white">#FFFEFC</color>
+    <color name="offWhite">#FEF2FC</color>
     <color name="startblue">#09c6df</color>
     <color name="endblue">#0bcce6</color>
 </resources>

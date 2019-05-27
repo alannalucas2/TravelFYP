@@ -41,10 +41,10 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
+/*import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 //import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.location.places.ui.PlacePicker;*/
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -190,7 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 int PLACE_PICKER_REQUEST = 1;
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                // Places.initialize(getApplicationContext(), google_maps_key);
 
@@ -200,7 +200,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage());
                 } catch (GooglePlayServicesNotAvailableException e) {
                     Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage());
-                }
+                }*/
             }
 
         });
@@ -221,6 +221,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }*/
+
 
 
     /**
@@ -506,7 +507,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
+    /*private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
@@ -520,7 +521,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         }
-    };
+    };*/
 
 
 

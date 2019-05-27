@@ -49,6 +49,7 @@ public class ProfilePage extends AppCompatActivity {
     private DatabaseReference mFriendRequestDatabase;
     private DatabaseReference mFriendDatabase;
     private FirebaseUser mCurrent_user;
+    FirebaseAuth mAuth;
 
 
 
@@ -58,6 +59,10 @@ public class ProfilePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page);
+
+
+        mAuth = FirebaseAuth.getInstance();
+
 
         final String user_id = getIntent().getStringExtra("user_id");
 
@@ -87,7 +92,7 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
-        mBtnFriendMap.setVisibility(View.GONE);
+        //mBtnFriendMap.setVisibility(View.GONE);
 
 
         mCurrent_state = "not_friends";
@@ -289,8 +294,8 @@ public class ProfilePage extends AppCompatActivity {
     private void selectNavigation(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.btmFriends:
-                Intent intent = new Intent(this, AllUsers.class);
+            case R.id.btmHome:
+                Intent intent = new Intent(this, MainActivity.class);
                 this.startActivity(intent);
                 break;
 

@@ -29,6 +29,8 @@ public class NavigationBarActivity extends AppCompatActivity implements Navigati
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, new ProfileFragment()).commit();
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -46,14 +48,18 @@ public class NavigationBarActivity extends AppCompatActivity implements Navigati
 
         switch(menuItem.getItemId()){
             case R.id.nav_profile:
-                Intent intent = new Intent(NavigationBarActivity.this, ProfilePage.class);
-                startActivity(intent);
-                finish();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, new ProfilePage()).commit();
+
+                Intent intent2 = new Intent(NavigationBarActivity.this, ProfilePage.class);
+                startActivity(intent2);
+
                 break;
             case R.id.nav_maps:
-                Intent intent2 = new Intent(NavigationBarActivity.this, NearbyLocations.class);
-                startActivity(intent2);
-                finish();
+
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NearbyLocationsFragment()).commit();
+                /*Intent intent = new Intent(NavigationBarActivity.this, NearbyLocationsFragment.class);
+                startActivity(intent);
+                finish();*/
                 break;
             case R.id.nav_users:
                 Intent intent3 = new Intent(NavigationBarActivity.this, AllUsers.class);

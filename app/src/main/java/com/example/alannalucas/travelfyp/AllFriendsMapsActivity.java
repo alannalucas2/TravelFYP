@@ -34,10 +34,10 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
+/*import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.location.places.ui.PlacePicker;*/
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -46,6 +46,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -179,7 +181,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
             @Override
             public void onClick(View v) {
                 int PLACE_PICKER_REQUEST = 1;
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                 try {
                     startActivityForResult(builder.build(AllFriendsMapsActivity.this), PLACE_PICKER_REQUEST);
@@ -187,7 +189,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
                     Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage());
                 } catch (GooglePlayServicesNotAvailableException e) {
                     Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage());
-                }
+                }*/
             }
 
         });
@@ -197,14 +199,14 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(this, data);
+                /*Place place = PlacePicker.getPlace(this, data);
 
                 PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(googleApiClient, place.getId());
                 placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
 
                 String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();*/
             }
         }
     }
@@ -255,7 +257,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
                 for (DataSnapshot s:dataSnapshot.getChildren()){
 
                       LocationInformation user = s.getValue(LocationInformation.class);
-                       LatLng location = new LatLng(user.latitude, user.longitude);
+                      LatLng location = new LatLng(user.latitude, user.longitude);
 
                     Toast.makeText(AllFriendsMapsActivity.this, s.getKey() + s.getValue(), Toast.LENGTH_LONG).show();
                     friendlist.add(s.getKey());
@@ -267,8 +269,6 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
                      mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
                 }
                 Toast.makeText(AllFriendsMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();
-
-
 
             }
 
@@ -525,7 +525,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
 
     }
 
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
+    /*private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
@@ -539,7 +539,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
 
 
         }
-    };
+    };*/
 
 
 

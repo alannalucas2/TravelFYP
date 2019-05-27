@@ -1,135 +1,208 @@
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
     xml android:version="1.0" encoding="utf-8"?>
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.Toolbar>
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/colorAccent"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 
 
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@+id/searchButton">
-
-            <fragment android:id="@+id/autocomplete_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                />
-
-        </android.support.v7.widget.CardView>
-
-</LinearLayout>
-
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical">
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="45dp"
-        android:layout_alignParentStart="true"
-        tools:context=".NearbyLocations" />
 
     <LinearLayout
-        android:id="@+id/second_relative_layout"
+        android:id="@+id/linlay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp">
+        android:layout_below="@+id/toolbar"
+        android:orientation="horizontal">
 
-
-        <ImageButton
-            android:id="@+id/btnStar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="145dp"
-            android:onClick="starClick"
-            android:src="@drawable/ic_star_border_black_24dp" />
-
-
-        <RelativeLayout
-            android:id="@+id/relButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
-
-            <ImageButton
-                android:id="@+id/clubs_nearby"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:onClick="onClick"
-                android:src="@mipmap/hospital" />
-
-            <ImageButton
-                android:id="@+id/hotels_nearby"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/clubs_nearby"
-                android:onClick="onClick"
-                android:src="@mipmap/school" />
-
-            <ImageButton
-                android:id="@+id/restaurants_nearby"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/hotels_nearby"
-                android:onClick="onClick"
-                android:src="@mipmap/restaurant" />
-
-        </RelativeLayout>
-
-        <android.support.design.widget.BottomNavigationView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/navigation"
-            android:background="@color/colorAccent"
+        <fragment android:id="@+id/places_autocomplete_fragment"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom"
-            app:menu="@menu/bottom_toolbar" />
-
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
 
 
     </LinearLayout>
 
 
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:layout_below="@+id/linlay1"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        tools:context=".NearbyLocations" />
 
-   </RelativeLayout>
+    <ImageButton
+        android:id="@+id/btnStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="185dp"
+        android:src="@drawable/ic_star_border_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/btnEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="225dp"
+        android:src="@drawable/ic_pin_drop_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/btnSaved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="265dp"
+        android:src="@drawable/ic_favorite_border_black_24dp" />
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp">
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="50dp"
+            app:fab_addButtonColorNormal="@color/colorAccent"
+            app:fab_icon="@drawable/ic_pin_drop_black_24dp"
+            app:fab_addButtonColorPressed="@color/colorPrimaryDark"
+            app:fab_addButtonPlusIconColor="@color/white"
+            app:fab_labelStyle="@style/customFab"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.896">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_action_saved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="FABclick"
+                app:fab_title="Saved "
+                app:fab_colorNormal="@color/quantum_yellow800"
+                app:fab_colorPressed="@color/colorAccent"
+                app:fab_icon="@drawable/ic_pin_drop_black_24dp"
+                app:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_action_events"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="FABclick"
+                app:fab_title="Events"
+                app:fab_colorNormal="@color/quantum_purple"
+                app:fab_colorPressed="@color/colorAccent"
+                app:fab_icon="@drawable/ic_pin_drop_black_24dp"
+                app:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_action_hotel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="FABclick"
+                app:fab_title="Hotels"
+                app:fab_icon="@drawable/ic_pin_drop_black_24dp"
+                app:fab_colorNormal="@color/colorPrimaryDark"
+                app:fab_colorPressed="@color/colorAccent"
+                app:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_action_nightclub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="FABclick"
+                app:fab_title="Clubs "
+                app:fab_colorNormal="@color/quantum_yellow"
+                app:fab_colorPressed="@color/colorAccent"
+                app:fab_icon="@drawable/ic_pin_drop_black_24dp"
+                app:fab_size="mini"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_action_restaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="FABclick"
+                app:fab_title=" Food "
+                app:fab_colorNormal="@color/quantum_pink"
+                app:fab_colorPressed="@color/colorAccent"
+                app:fab_icon="@drawable/ic_pin_drop_black_24dp"
+                app:fab_size="mini"/>
 
 
 
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-</LinearLayout>
 
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?android:attr/windowBackground"
+            android:backgroundTint="@color/lightNavy"
+            app:itemIconTint="@color/colorAccent"
+            app:itemTextColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/bottom_toolbar" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</RelativeLayout>

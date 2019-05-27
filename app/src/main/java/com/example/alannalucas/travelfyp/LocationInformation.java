@@ -11,9 +11,16 @@ public class LocationInformation {
     public LocationInformation(){
     }
 
+
     public LocationInformation(String name, double latitude,double longitude){
         //this.id = id;
         this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public LocationInformation(double latitude,double longitude){
+        //this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
     }

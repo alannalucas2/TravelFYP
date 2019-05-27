@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/border"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:padding="20dp"
+        app:srcCompat="@drawable/ic_place_black_24dp" />
+
+    <TextView
+        android:id="@+id/usernameStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:paddingTop="20dp"
+        android:layout_toRightOf="@+id/profileImage"/>
+
+    <TextView
+        android:id="@+id/timeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/usernameStamp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="19dp"
+        android:text="Time" />
+
+    <TextView
+        android:id="@+id/reviewStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/locImage"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="26dp"
+        android:text="Review" />
+
+
+    <ImageView
+        android:id="@+id/locImage"
+        android:layout_width="328dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="15dp"
+        android:padding="10dp"
+        app:srcCompat="@drawable/ic_place_black_24dp" />
+
+
+    <TextView
+        android:id="@+id/locNameStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="33dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@id/locImage"
+        android:text="Location" />
+
+
+</RelativeLayout>

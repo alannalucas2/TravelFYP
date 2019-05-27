@@ -10,15 +10,17 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/btmHome"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/btmLocation"
         android:icon="@drawable/ic_pin_drop_black_24dp"
         android:title="Location"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/btmFriends"
-        android:icon="@drawable/ic_people_black_24dp"
-        android:title="Friends"
-        app:showAsAction="always"/>
+
 
 </menu>

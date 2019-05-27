@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -56,6 +57,7 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("All App Users");
 
         mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,29 +68,14 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
             }
         });
 
-
-        /*Toolbar navView = findViewById(R.id.navigationView);
-        setSupportActionBar(navView);*/
-/*
-        drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(AllUsers.this);
-
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-               R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
         mBtnAllFriendsMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AllUsers.this, AllFriendsMapsActivity.class);
+                Intent intent = new Intent(AllUsers.this, FriendMapsActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
 
     }
 
@@ -117,6 +104,8 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.users_single_layout, parent, false);
 
+                System.out.println("made it to createviewholder");
+
                 return new UserViewHolder(view);
 
 
@@ -131,13 +120,20 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
                 final String user_id = getRef(position).getKey();
 
 
+                System.out.println("made it to bindviewholder");
+
+
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
+                        //for activity to activity
                         Intent profileIntent = new Intent(AllUsers.this, ProfilePage.class);
                         profileIntent.putExtra("user_id", user_id);
                         startActivity(profileIntent);
+
+
+
 
                     }
                 });
@@ -154,7 +150,7 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
 
         switch (menuItem.getItemId()) {
             case R.id.nav_profile:
-                Intent intent = new Intent(AllUsers.this, ProfilePage.class);
+                Intent intent = new Intent(AllUsers.this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -182,13 +178,13 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
         return true;
     }
 
-    public void onBackPressed() {
+    /*public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-    }
+    }*/
 
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
@@ -209,14 +205,13 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
             TextView userAddressView = (TextView) mView.findViewById(R.id.userSingleAddress);
             userAddressView.setText(address);
         }
-
-    }
+   }
 
     private void selectNavigation(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.btmFriends:
-                Intent intent = new Intent(this, AllUsers.class);
+            case R.id.btmHome:
+                Intent intent = new Intent(this, MainActivity.class);
                 this.startActivity(intent);
                 break;
 
@@ -226,7 +221,7 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
                 break;
 
             case R.id.btmProfile:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
+                Intent intent3 = new Intent(this, ProfileActivity.class);
                 this.startActivity(intent3);
                 break;
 

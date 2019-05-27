@@ -31,6 +31,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.w3c.dom.Text;
 
@@ -41,11 +43,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView textName;
     private static final int CHOOSE_IMAGE = 101;
-    ImageView imageView;
+    ImageView mImageView;
     Button buttonSave;
     EditText editName;
 
-    Uri uriItemImage;
+    Uri uriItemImage, resultUri;
     String profileImageUrl;
 
     FirebaseAuth mAuth;
@@ -58,11 +60,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+        mImageView = (ImageView) findViewById(R.id.imageView);
         buttonSave = (Button) findViewById(R.id.btnSave);
         editName = (EditText) findViewById(R.id.editName);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        mImageView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -89,7 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (user != null) {
             if (user.getPhotoUrl() != null) {
                 Glide.with(this).load(user.getPhotoUrl().toString())
-                        .into(imageView);
+                        .into(mImageView);
 
             }
 
@@ -132,33 +134,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
 
-        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            uriItemImage = data.getData();
 
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriItemImage);
-                imageView.setImageBitmap(bitmap);
-
-                uploadImageToFirebaseStorage();
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public void uploadImageToFirebaseStorage() {
         final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
 
 
         if (uriItemImage != null) {
-            profileImageRef.putFile(uriItemImage)
+            profileImageRef.putFile(resultUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -186,6 +171,45 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            uriItemImage = data.getData();
+
+            CropImage.activity(uriItemImage)
+                    .setAspectRatio(150, 150)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setCropShape(CropImageView.CropShape.OVAL)
+                    .start(this);
+
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+                Uri resultUri = result.getUri();
+
+                if (resultCode == RESULT_OK) {
+
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    mImageView.setImageBitmap(bitmap);
+
+                    uploadImageToFirebaseStorage();
+
+
+                }
+
+            }
+        }
+
     }
 
 
@@ -308,9 +332,6 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(ProfileActivity.this, ViewListedLocations.class);
         startActivity(intent);
         finish();
-    }
-
-    public void FriendsOnClick(View view) {
     }
 }
 

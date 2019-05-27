@@ -175,7 +175,7 @@ public class UpdateProfile extends AppCompatActivity {
             Uri imageUri = data.getData();
 
             CropImage.activity(imageUri)
-                    .setAspectRatio(1,1)
+                    .setCropShape(CropImageView.CropShape.OVAL)
                     .start(this);
 
             //Toast.makeText()
@@ -274,7 +274,7 @@ public class UpdateProfile extends AppCompatActivity {
     private void selectNavigation(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.btmFriends:
+            case R.id.btmHome:
                 Intent intent = new Intent(this, AllUsers.class);
                 this.startActivity(intent);
                 break;

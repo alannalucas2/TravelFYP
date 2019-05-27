@@ -4,27 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_bottom"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="@color/colorAccent"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/PopupOverlay">
+        android:layout_height="wrap_content"
+        app:titleTextColor="@color/colorAccent"
+
+        android:background="@color/lightNavy"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
     </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rel1"
+        android:layout_below="@id/toolbar"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_get_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="get photo"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_get_photo"
+            android:id="@+id/image_view"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_view"
+            android:id="@+id/txt_detail"/>
+
+
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerFeed"
+        android:layout_below="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="369dp"
+        android:padding="15dp"
+        android:textColor="@color/colorAccent">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/constraint"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            app:itemIconTint="@color/colorAccent"
+            app:itemTextColor="@color/colorAccent"
+            android:backgroundTint="@color/lightNavy"
+            android:background="?android:attr/windowBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/bottom_toolbar" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
 
 </RelativeLayout>

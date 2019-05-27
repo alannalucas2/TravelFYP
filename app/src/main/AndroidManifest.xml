@@ -89,7 +89,10 @@
         <activity
             android:name=".NavigationBarActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ListOnline"></activity>
+        <activity android:name=".ListOnline" />
+        <activity
+            android:name=".EventsMap"
+            android:label="@string/title_activity_events_map"></activity>
     </application>
 
 </manifest>

@@ -10,7 +10,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,18 +25,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
+/*import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.location.places.ui.PlacePicker;*/
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -154,8 +149,6 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
         });
 
 
-
-
         LocationsList = (Button) findViewById(R.id.btnListLoc);
         MoreInfo = (Button) findViewById(R.id.btnMoreInfo);
 
@@ -179,7 +172,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 int PLACE_PICKER_REQUEST = 1;
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                 try {
                     startActivityForResult(builder.build(FriendMapsActivity.this), PLACE_PICKER_REQUEST);
@@ -187,7 +180,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
                     Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage());
                 } catch (GooglePlayServicesNotAvailableException e) {
                     Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage());
-                }
+                }*/
             }
 
         });
@@ -197,14 +190,14 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(this, data);
+                /*Place place = PlacePicker.getPlace(this, data);
 
                 PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(googleApiClient, place.getId());
                 placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
 
                 String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();*/
             }
         }
     }
@@ -228,9 +221,9 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = user.getUid();
 
-       //String test = mFriendLocations.child("Friends").child(userID).getKey();
+        String test = mFriendLocations.child("Friends").child(userID).getKey();
 
-     //   Toast.makeText(this, test, Toast.LENGTH_LONG).show();
+        //   Toast.makeText(this, test, Toast.LENGTH_LONG).show();
        /* mFriendLocations.child(test).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -249,25 +242,27 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
                 }
             }*/
 
-        mFriendLocations.child("Friends").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        //mFriendLocations.child("Friends").child(userID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        mFriendLocations.child(test).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s:dataSnapshot.getChildren()){
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
 
-                  //  LocationInformation user = s.getValue(LocationInformation.class);
-                 //   LatLng location = new LatLng(user.latitude, user.longitude);
+                    LocationInformation user = s.getValue(LocationInformation.class);
+                    LatLng location = new LatLng(user.latitude, user.longitude);
 
                     Toast.makeText(FriendMapsActivity.this, s.getKey() + s.getValue(), Toast.LENGTH_LONG).show();
                     friendlist.add(s.getKey());
-                    findLocations(s.getKey());
+                    findLocations();
 
-               //     mMap.addMarker(new MarkerOptions().position(location).title(user.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                    mMap.addMarker(new MarkerOptions().position(location).title(user.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
-                 //   mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                   // mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                    mMap.animateCamera(CameraUpdateFactory.zoomBy(30));
                 }
                 Toast.makeText(FriendMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();
-
 
 
             }
@@ -279,7 +274,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        Toast.makeText(FriendMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();
+        //Toast.makeText(FriendMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();
 
 
 
@@ -307,6 +302,36 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    public void findLocations() {
+
+        for (int i = 0; i < friendlist.size(); i++) {
+            String friendID = friendlist.get(i);
+            mFriendLocations.child(friendID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+
+                        LocationInformation userlocation = s.getValue(LocationInformation.class);
+                        LatLng location = new LatLng(userlocation.latitude, userlocation.longitude);
+
+                        //Toast.makeText(FriendMapsActivity.this, Double.toString(userlocation.latitude), Toast.LENGTH_LONG).show();
+
+
+                        mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                        mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+                    }
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
 
 
     public void onMapSearch(View view) {
@@ -338,8 +363,6 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     public void onMoreInfo(View view) {
         Toast.makeText(FriendMapsActivity.this, "more info...", Toast.LENGTH_SHORT).show();
     }
-
-
 
 
     public boolean checkUserLocationPermission() {
@@ -460,7 +483,6 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
         mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
 
 
-
         if (googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
 
@@ -496,7 +518,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
+    /*private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
@@ -508,11 +530,8 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             final Place place = places.get(0);
 
 
-
         }
-    };
-
-
+    };*/
 
 
     @Override
@@ -520,35 +539,5 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
         return false;
     }
 
-
-public void findLocations(String friendID){
-
-   // for (int i =0; i<friendlist.size(); i++) {
-    //    String friendID = friendlist.get(i);
-        mFriendLocations.child(friendID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()) {
-
-                    LocationInformation userlocation = s.getValue(LocationInformation.class);
-                    LatLng location = new LatLng(userlocation.latitude, userlocation.longitude);
-
-                    //Toast.makeText(FriendMapsActivity.this, Double.toString(userlocation.latitude), Toast.LENGTH_LONG).show();
-
-
-                    mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                    mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
-                }
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 }
