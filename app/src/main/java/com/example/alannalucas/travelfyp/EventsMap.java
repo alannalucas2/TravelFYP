@@ -177,7 +177,6 @@ public class EventsMap extends AppCompatActivity implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mEvents = (ImageButton) findViewById(R.id.btnEvents);
         mSaved = (ImageButton) findViewById(R.id.btnSaved);
 
 
@@ -611,10 +610,6 @@ public class EventsMap extends AppCompatActivity implements
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
 
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfileActivity.class);
-                this.startActivity(intent);
-                break;
 
             case R.id.menuAllUsers:
                 Intent intent1 = new Intent(this, AllUsers.class);
@@ -626,10 +621,6 @@ public class EventsMap extends AppCompatActivity implements
                 this.startActivity(intent3);
                 break;
 
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
 
         }
 

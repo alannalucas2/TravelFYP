@@ -10,10 +10,31 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_weight="1"
-        android:background="@drawable/bground">
+        android:background="@drawable/bokefulbackground">
 
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/logo"
+            android:layout_width="137dp"
+            android:layout_height="125dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="51dp"
+            android:src="@drawable/pineapplelogo"
+            app:civ_border_color="@color/aqua"
+            app:civ_border_width="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="37dp"
+            android:text="Travel Pin"
+            android:textColor="@color/aqua"
+            android:textSize="40dp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -38,22 +59,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="email"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="15dp"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/colorAccent" />
+                android:textColor="@color/blue"
+                android:textColorHint="@color/blue" />
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="password"
-                android:textColor="@color/colorAccent"
+                android:hint="Password"
+                android:textColor="@color/blue"
                 android:inputType="textPassword"
                 android:paddingBottom="15dp"
-                android:textColorHint="@color/colorAccent" />
+                android:textColorHint="@color/blue" />
 
             <Button
                 android:id="@+id/login"
@@ -62,8 +83,9 @@
                 android:layout_gravity="center"
                 android:layout_margin="7dp"
                 android:text="Login"
+                android:background="@drawable/roundbutton"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/blue" />
 
             <Button
                 android:id="@+id/btnReg"
@@ -71,9 +93,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="7dp"
+                android:background="@drawable/roundbutton"
                 android:text="Don't have account? Register here"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/blue" />
 
 
 

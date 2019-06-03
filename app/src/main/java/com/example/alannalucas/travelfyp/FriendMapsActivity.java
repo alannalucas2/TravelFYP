@@ -1,6 +1,7 @@
 package com.example.alannalucas.travelfyp;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -9,19 +10,25 @@ import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -41,6 +48,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -51,7 +60,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -71,9 +82,15 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final String TAG = "MapsActivity";
 
+    private String name, selPlace, placeID, time, address;
+    private double latitude, longitude;
+    private float rateValue, rating;
+    private BottomNavigationView mBottomNav;
 
+
+    private ImageButton mHeart;
     private FirebaseAuth mAuth;
-    private DatabaseReference mFriendLocations;
+    private DatabaseReference mFriendLocations, saveLocations, saveRating;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -81,6 +98,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
 
     public ArrayList<String> friendlist = new ArrayList<String>();
+    public ArrayList<String> locationlist = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +111,19 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             checkUserLocationPermission();
         }
 
+        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectNavigation(item);
+                return true;
+            }
+        });
+
+
+        final String user_id = getIntent().getStringExtra("user_id");
+        final String username = getIntent().getStringExtra("username");
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -101,6 +132,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle(username + "'s Locations");
 
 
         ChildEventListener mChildEventListener;
@@ -111,9 +143,10 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
 
         mAuth = FirebaseAuth.getInstance();
+        mFriendLocations = FirebaseDatabase.getInstance().getReference().child("User Locations");
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mFriendLocations = mFirebaseDatabase.getReference();
-        mFriendLocations.push().setValue(marker);
+        saveLocations = mFirebaseDatabase.getReference();
+        saveRating = mFirebaseDatabase.getReference();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -148,44 +181,43 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
+        mHeart = (ImageButton) findViewById(R.id.btnSave);
+        //mHeart.setVisibility(View.INVISIBLE);
 
-        LocationsList = (Button) findViewById(R.id.btnListLoc);
-        MoreInfo = (Button) findViewById(R.id.btnMoreInfo);
-
-
-        ImageView mNewPlace = (ImageView) findViewById(R.id.place_info);
-
-        mNewPlace.setOnClickListener(new View.OnClickListener() {
+        mHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FriendMapsActivity.this, SaveLocation.class);
-                startActivity(intent);
-                finish();
+
+                LocationInformation locInfo = new LocationInformation(name, latitude, longitude, rating, placeID, time, address);
+
+
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userID = user.getUid();
+                saveLocations.child("User Locations").child(userID).child(name).setValue(locInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(FriendMapsActivity.this, "Location saved", Toast.LENGTH_LONG).show();
+                        // mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
+                        alertRating();
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(FriendMapsActivity.this, "Error location not saved", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+
+
             }
         });
 
 
-        ImageView mPlacePicker = (ImageView) findViewById(R.id.place_picker);
-
-        mPlacePicker.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                int PLACE_PICKER_REQUEST = 1;
-                /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-                try {
-                    startActivityForResult(builder.build(FriendMapsActivity.this), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage());
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage());
-                }*/
             }
 
-        });
 
-    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
@@ -203,6 +235,41 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
+    public void alertRating(){
+
+        final View v = LayoutInflater.from(FriendMapsActivity.this).inflate(R.layout.rating_alert, null);
+        final RatingBar mRatingBar = (RatingBar) v.findViewById(R.id.ratingBar);
+
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(v)
+                .setCancelable(true)
+                .setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        rateValue = mRatingBar.getRating();
+                        Toast.makeText(FriendMapsActivity.this, "rating test1:  " + rateValue, Toast.LENGTH_LONG).show();
+
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String userID = user.getUid();
+
+                        saveRating = FirebaseDatabase.getInstance().getReference().child("User Locations").child(userID).child(name);
+                        saveRating.child("rating").setValue(rateValue);
+
+                    }
+                })
+                .setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.setTitle("");
+        alert.show();
+
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -215,66 +282,89 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        googleMap.setOnMarkerClickListener(this);
+        //googleMap.setOnMarkerClickListener(this);
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                mHeart.setVisibility(View.VISIBLE);
+
+                latitude = marker.getPosition().latitude;
+                longitude = marker.getPosition().longitude;
+                name = marker.getTitle();
+                placeID = marker.getId();
+                address = marker.getSnippet();
+                time = DateFormat.getDateTimeInstance().format(new Date());
+
+                Toast.makeText(FriendMapsActivity.this, name, Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
+
+
+
+        /*mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                mHeart.setVisibility(View.VISIBLE);
+
+                latitude = marker.getPosition().latitude;
+                longitude = marker.getPosition().longitude;
+                name = marker.getTitle();
+                placeID = marker.getId();
+                address = marker.getSnippet();
+
+                time = DateFormat.getDateTimeInstance().format(new Date());
+                //long miliTime = time.getTime
+
+
+
+                //getMarkerInfo();
+
+                Toast.makeText(FriendMapsActivity.this, name, Toast.LENGTH_SHORT).show();
+                return false;
+
+
+            }
+        });*/
 
 
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = user.getUid();
 
-        String test = mFriendLocations.child("Friends").child(userID).getKey();
+        final String user_id = getIntent().getStringExtra("user_id");
 
-        //   Toast.makeText(this, test, Toast.LENGTH_LONG).show();
-       /* mFriendLocations.child(test).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s:dataSnapshot.getChildren()){
-
-                    LocationInformation user = s.getValue(LocationInformation.class);
-                    LatLng location = new LatLng(user.latitude, user.longitude);
-
-                    Toast.makeText(FriendMapsActivity.this, Double.toString(user.latitude), Toast.LENGTH_LONG).show();
-
-
-                    mMap.addMarker(new MarkerOptions().position(location).title(user.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                    mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
-                }
-            }*/
-
-
-        //mFriendLocations.child("Friends").child(userID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
-
-        mFriendLocations.child(test).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
+        mFriendLocations.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
 
-                    LocationInformation user = s.getValue(LocationInformation.class);
-                    LatLng location = new LatLng(user.latitude, user.longitude);
+                    LocationInformation locInfo = s.getValue(LocationInformation.class);
+                    LatLng location = new LatLng(locInfo.latitude, locInfo.longitude);
+                    name = locInfo.name;
 
-                    Toast.makeText(FriendMapsActivity.this, s.getKey() + s.getValue(), Toast.LENGTH_LONG).show();
-                    friendlist.add(s.getKey());
-                    findLocations();
 
-                    mMap.addMarker(new MarkerOptions().position(location).title(user.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                    //Toast.makeText(FriendMapsActivity.this, "toast1" + s.getKey() + s.getValue(), Toast.LENGTH_LONG).show();
+                    locationlist.add(s.getKey());
+                    findLocations(s.getKey());
+
+                    mMap.addMarker(new MarkerOptions().position(location).title(name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+
 
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                    mMap.animateCamera(CameraUpdateFactory.zoomBy(30));
+                    //mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
                 }
-                Toast.makeText(FriendMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();
-
-
+                //Toast.makeText(NearbyLocations.this, "toast2" + Integer.toString(locationlist.size()), Toast.LENGTH_LONG).show();
             }
 
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
-        //Toast.makeText(FriendMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();
 
 
 
@@ -298,15 +388,16 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        //displaylocation();
 
     }
 
-    public void findLocations() {
+    public void findLocations(String friendID) {
 
-        for (int i = 0; i < friendlist.size(); i++) {
-            String friendID = friendlist.get(i);
-            mFriendLocations.child(friendID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
+        final String user_id = getIntent().getStringExtra("user_id");
+
+        for (int i = 0; i < locationlist.size(); i++) {
+            friendID = locationlist.get(i);
+            mFriendLocations.child("User Locations").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
@@ -317,10 +408,10 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
                         //Toast.makeText(FriendMapsActivity.this, Double.toString(userlocation.latitude), Toast.LENGTH_LONG).show();
 
 
-                        mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                        mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
 
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                        mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+                        //mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
                     }
                 }
 
@@ -410,56 +501,6 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-    private void getDeviceLocation() {
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-
-
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.menuLogout:
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
-
-            case R.id.menuAllUsers:
-                Intent intent1 = new Intent(this, AllUsers.class);
-                this.startActivity(intent1);
-                break;
-
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfilePage.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
-
-        }
-
-
-        return true;
-    }
 
 
     @Override
@@ -475,7 +516,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("User Current Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
         marker = mMap.addMarker(markerOptions);
 
@@ -506,6 +547,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
 
     }
+
 
 
     @Override
@@ -539,5 +581,64 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
         return false;
     }
 
+    private void selectNavigation(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.btmHome:
+                Intent intent = new Intent(this, MainActivity.class);
+                this.startActivity(intent);
+                break;
+
+            case R.id.btmLocation:
+                Intent intent1 = new Intent(this, NearbyLocations.class);
+                this.startActivity(intent1);
+                break;
+
+            case R.id.btmProfile:
+                Intent intent3 = new Intent(this, ProfileActivity.class);
+                this.startActivity(intent3);
+                break;
+
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menuLogout:
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                break;
+
+
+            case R.id.menuAllUsers:
+                Intent intent1 = new Intent(this, AllUsers.class);
+                this.startActivity(intent1);
+                break;
+
+            case R.id.accountDetails:
+                Intent intent3 = new Intent(this, UpdateProfile.class);
+                this.startActivity(intent3);
+                break;
+
+
+        }
+
+
+        return true;
+    }
 }
+

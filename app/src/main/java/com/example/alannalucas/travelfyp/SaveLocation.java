@@ -136,7 +136,7 @@ import com.google.firebase.database.ValueEventListener;
          double latitude = Double.parseDouble(editTextLatitude.getText().toString().trim());
          double longitude = Double.parseDouble(editTextLongitude.getText().toString().trim());
 
-         LocationInformation locInfo = new LocationInformation(name, latitude, longitude);
+         /*LocationInformation locInfo = new LocationInformation(name, latitude, longitude, rating);
 
          FirebaseUser user = mAuth.getCurrentUser();
          String userID = user.getUid();
@@ -152,7 +152,7 @@ import com.google.firebase.database.ValueEventListener;
                          Toast.makeText(SaveLocation.this, "Error location not saved", Toast.LENGTH_LONG).show();
 
                      }
-                 });
+                 });*/
 
      }
 
@@ -187,10 +187,6 @@ import com.google.firebase.database.ValueEventListener;
                  startActivity(new Intent(this, LoginActivity.class));
                  break;
 
-             case R.id.menuProfile:
-                 Intent intent = new Intent(this, ProfileActivity.class);
-                 this.startActivity(intent);
-                 break;
 
              case R.id.menuAllUsers:
                  Intent intent1 = new Intent(this, AllUsers.class);
@@ -202,10 +198,6 @@ import com.google.firebase.database.ValueEventListener;
                  this.startActivity(intent3);
                  break;
 
-             case R.id.menuLocation:
-                 Intent intent2 = new Intent(this, MapsActivity.class);
-                 this.startActivity(intent2);
-                 break;
 
          }
 

@@ -1,6 +1,7 @@
 package com.example.alannalucas.travelfyp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     }
 
     public static class FeedViewHolder extends RecyclerView.ViewHolder{
-        TextView locationName;
+        TextView usernameStamp, addressStamp, locationStamp, ratingStamp;
 
         FeedViewHolder(View v) {
             super(v);
-            this.locationName = (TextView) itemView.findViewById(R.id.locNameStamp);
+            this.locationStamp = (TextView) itemView.findViewById(R.id.locationStamp);
+            this.usernameStamp = (TextView) itemView.findViewById(R.id.usernameStamp);
+            this.addressStamp = (TextView) itemView.findViewById(R.id.addressStamp);
+            this.ratingStamp = (TextView) itemView.findViewById(R.id.ratingStamp);
         }
     }
 
@@ -47,8 +51,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     @Override
     public void onBindViewHolder(FeedViewHolder holder, int position) {
         LocationInformation location = feedList.get(position);
-        holder.locationName.setText(String.valueOf(location.getName()));
-
+        holder.locationStamp.setText(String.valueOf(location.getName()));
+        holder.addressStamp.setText(String.valueOf(location.getAddress()));
+        //holder.usernameStamp.setText(String.valueOf(location.getName()));
+        holder.ratingStamp.setText(String.valueOf(location.getRating()));
 
         //myLocationId = String.valueOf((location.getPostId()));
 
@@ -56,6 +62,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             @Override
             public void onClick(View v) {
 
+                //Intent i = new Intent(this, )
 
             }
         });

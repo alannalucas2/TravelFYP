@@ -6,17 +6,26 @@ public class LocationInformation {
     public String name;
     public double latitude;
     public double longitude;
+    public float rating;
+    public String placeID;
+    public String time;
+    public String address;
 
 
     public LocationInformation(){
     }
 
 
-    public LocationInformation(String name, double latitude,double longitude){
+    public LocationInformation(String name, double latitude,double longitude, float rating, String placeID, String time, String address){
         //this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.rating = rating;
+        this.placeID = placeID;
+        this.time = time;
+        this.address = address;
+
     }
 
     public LocationInformation(double latitude,double longitude){
@@ -24,14 +33,6 @@ public class LocationInformation {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
-    /*public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }*/
 
     public String getName() {
         return name;
@@ -55,5 +56,37 @@ public class LocationInformation {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public String getPlaceID() {
+        return placeID;
+    }
+
+    public void setPlaceID(String placeID) {
+        this.placeID = placeID;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

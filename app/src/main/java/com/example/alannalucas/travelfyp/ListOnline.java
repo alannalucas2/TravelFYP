@@ -133,6 +133,7 @@ public class ListOnline extends AppCompatActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
 
+
             case R.id.menuAllUsers:
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
@@ -143,26 +144,11 @@ public class ListOnline extends AppCompatActivity {
                 this.startActivity(intent3);
                 break;
 
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfilePage.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
-
-            case R.id.listOnline:
-                Intent intent4 = new Intent(this, ListOnline.class);
-                this.startActivity(intent4);
-                break;
 
         }
 
 
         return true;
     }
-
 
 }

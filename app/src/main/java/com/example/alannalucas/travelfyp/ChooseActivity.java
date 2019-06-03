@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class ChooseActivity extends AppCompatActivity {
 
-    Button mLogin, mRegister;
+    Button mContinue;
     //String uEmail, uPassword;
 
     @Override
@@ -16,19 +16,10 @@ public class ChooseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose);
 
-        mLogin = (Button) findViewById(R.id.login);
-        mRegister = (Button) findViewById(R.id.register);
+        mContinue = (Button) findViewById(R.id.chooseBtn);
 
-        mRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ChooseActivity.this, RegisterActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
-        mLogin.setOnClickListener(new View.OnClickListener() {
+        mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseActivity.this, LoginActivity.class);

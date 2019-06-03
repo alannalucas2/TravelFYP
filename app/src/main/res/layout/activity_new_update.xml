@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bokefulbackground"
+    tools:context=".UpdateProfile">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@color/buttonBlue"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_below="@id/toolbar"
+        android:background="@drawable/bokefulbackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/updateProfileImage"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="126dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/pineapplelogo"
+            app:civ_border_color="@color/aqua"
+            app:civ_border_width="7dp" />
+
+
+        <RelativeLayout
+            android:layout_below="@id/updateProfileImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:paddingRight="15dp">
+
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Username"
+                android:inputType="textEmailAddress"
+                android:paddingBottom="15dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/blue" />
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Name"
+                android:layout_below="@+id/username"
+                android:textColor="@color/blue"
+                android:paddingBottom="15dp"
+                android:textColorHint="@color/blue" />
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Address"
+                android:layout_below="@+id/name"
+                android:textColor="@color/blue"
+                android:paddingBottom="15dp"
+                android:textColorHint="@color/blue" />
+
+            <Button
+                android:id="@+id/btnUploadPic"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/address"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="9dp"
+                android:text="Upload New Profile Image"
+                android:background="@drawable/roundbuttonlight"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnUpdateAccount"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnUploadPic"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="9dp"
+                android:text="Save"
+                android:background="@drawable/roundbuttonlight"
+                android:textAllCaps="false" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?android:attr/windowBackground"
+            android:backgroundTint="@color/colorPrimary"
+            app:itemIconTint="@color/buttonBlue"
+            app:itemTextColor="@color/buttonBlue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/bottom_toolbar" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>

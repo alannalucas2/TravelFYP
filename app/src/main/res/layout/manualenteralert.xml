@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="200dp"
+    android:paddingTop="10dp"
+    android:paddingLeft="20dp"
+    android:padding="20dp"
+    android:background="@color/colorPrimary"
+    tools:context=".NearbyLocations">
+
+    <EditText
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/manName"
+        android:hint="Location Name"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+    <EditText
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/manAddress"
+        android:hint="Location Name"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressBackgroundTint="@color/white"
+        android:progressTint="@color/white"
+        style="@style/RatingBar"
+        android:numStars="5"
+        android:stepSize="0.5" />
+
+
+
+
+
+</LinearLayout>

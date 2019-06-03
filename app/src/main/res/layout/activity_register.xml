@@ -9,11 +9,32 @@
 
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="237dp"
         android:layout_weight="1"
-        android:background="@drawable/bground">
+        android:background="@drawable/bokefulbackground">
 
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/logo"
+            android:layout_width="137dp"
+            android:layout_height="125dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/pineapplelogo"
+            app:civ_border_color="@color/aqua"
+            app:civ_border_width="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp"
+            android:text="Travel Pin"
+            android:textColor="@color/aqua"
+            android:textSize="40dp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -32,59 +53,72 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="Username"
+                android:inputType="textEmailAddress"
+                android:paddingBottom="15dp"
+                android:textColor="@color/blue"
+                android:textColorHint="@color/blue" />
 
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="email"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="15dp"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="@color/colorAccent" />
+                android:textColor="@color/blue"
+                android:textColorHint="@color/blue" />
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="password"
-                android:textColor="@color/colorAccent"
+                android:hint="Password"
+                android:textColor="@color/blue"
                 android:inputType="textPassword"
                 android:paddingBottom="15dp"
-                android:textColorHint="@color/colorAccent" />
+                android:textColorHint="@color/blue" />
 
             <EditText
                 android:id="@+id/confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="confirm password"
-                android:textColor="@color/colorAccent"
+                android:hint="Confirm Password"
+                android:textColor="@color/blue"
                 android:inputType="textPassword"
                 android:paddingBottom="15dp"
-                android:textColorHint="@color/colorAccent" />
+                android:textColorHint="@color/blue" />
 
             <Button
                 android:id="@+id/register"
-                android:layout_width="match_parent"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="7dp"
                 android:text="Register"
+                android:background="@drawable/roundbutton"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/blue" />
+
 
             <Button
                 android:id="@+id/btnLog"
-                android:layout_width="match_parent"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="7dp"
+                android:layout_margin="2dp"
+                android:background="@drawable/roundbutton"
                 android:text="Already have an account? Log in here"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/blue" />
 
 
 

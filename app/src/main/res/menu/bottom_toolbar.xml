@@ -12,7 +12,7 @@
     <item
         android:id="@+id/btmHome"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"
+        android:title="Activity"
         app:showAsAction="always"/>
 
     <item

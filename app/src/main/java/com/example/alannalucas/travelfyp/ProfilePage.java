@@ -52,9 +52,6 @@ public class ProfilePage extends AppCompatActivity {
     FirebaseAuth mAuth;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +63,7 @@ public class ProfilePage extends AppCompatActivity {
 
         final String user_id = getIntent().getStringExtra("user_id");
 
+
         mTotalFriends = (TextView) findViewById(R.id.totalFriends);
         mDisplayAddress = (TextView) findViewById(R.id.displayName);
         mDisplayName = (TextView) findViewById(R.id.displayAddress);
@@ -73,6 +71,7 @@ public class ProfilePage extends AppCompatActivity {
         mBtnDeclineFriend = (Button) findViewById(R.id.btnDeclineFriend);
         mBtnFriendMap = (Button) findViewById(R.id.btnFriendMap);
 
+        mBtnFriendMap.setVisibility(View.INVISIBLE);
 
         mBtnFriendMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +91,7 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
+        final String username = String.valueOf(mDisplayName);
         //mBtnFriendMap.setVisibility(View.GONE);
 
 
@@ -122,26 +122,28 @@ public class ProfilePage extends AppCompatActivity {
                 mFriendRequestDatabase.child(mCurrent_user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild(user_id)){
+                        if (dataSnapshot.hasChild(user_id)) {
                             String req_type = dataSnapshot.child(user_id).child("request_type").getValue().toString();
 
-                            if(req_type.equals("received")){
+                            if (req_type.equals("received")) {
 
                                 mCurrent_state = "req_received";
                                 mBtnAddFriend.setText("Accept Friend Request");
+                                mBtnFriendMap.setText("Decline Friend Request");
+                                mBtnFriendMap.setVisibility(View.VISIBLE);
 
 
-                            }else if(req_type.equals("sent")){
+                            } else if (req_type.equals("sent")) {
                                 mCurrent_state = "req_sent";
                                 mBtnAddFriend.setText("Cancel Friend Request");
                             }
 
-                        }else {
+                        } else {
 
                             mFriendDatabase.child(mCurrent_user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(dataSnapshot.hasChild(user_id)){
+                                    if (dataSnapshot.hasChild(user_id)) {
 
                                         mCurrent_state = "friends";
                                         mBtnAddFriend.setText("Remove Friend");
@@ -153,6 +155,8 @@ public class ProfilePage extends AppCompatActivity {
                                             public void onClick(View v) {
 
                                                 Intent intent = new Intent(ProfilePage.this, FriendMapsActivity.class);
+                                                intent.putExtra("user_id", user_id);
+                                                intent.putExtra("username", username);
                                                 startActivity(intent);
                                                 finish();
 
@@ -186,6 +190,40 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
+        /*if(mCurrent_state.equals("not_friends")){
+            mBtnDeclineFriend.setVisibility(View.INVISIBLE);
+        }*/
+
+        mBtnFriendMap.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 if (mCurrent_state.equals("req_received")) {
+
+
+                     mFriendRequestDatabase.child(mCurrent_user.getUid()).child(user_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                         @Override
+                         public void onSuccess(Void aVoid) {
+
+                             mFriendRequestDatabase.child(user_id).child(mCurrent_user.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                 @Override
+                                 public void onSuccess(Void aVoid) {
+                                     mBtnAddFriend.setEnabled(true);
+                                     mCurrent_state = "not_friends";
+                                     mBtnAddFriend.setText("Send Friend Request");
+                                     mBtnFriendMap.setVisibility(View.INVISIBLE);
+
+
+                                 }
+                             });
+
+                         }
+                     });
+                 }
+             }
+         });
+
+
+
         mBtnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,13 +232,13 @@ public class ProfilePage extends AppCompatActivity {
 
                 //NOT FRIENDS STATE
 
-                if(mCurrent_state.equals("not_friends")){
+                if (mCurrent_state.equals("not_friends")) {
 
                     mFriendRequestDatabase.child(mCurrent_user.getUid()).child(user_id).child("request_type").setValue("sent").addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 mFriendRequestDatabase.child(user_id).child(mCurrent_user.getUid()).child("request_type").setValue("received").addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -213,7 +251,7 @@ public class ProfilePage extends AppCompatActivity {
                                     }
                                 });
 
-                            }else{
+                            } else {
                                 Toast.makeText(ProfilePage.this, "Error", Toast.LENGTH_LONG).show();
 
                             }
@@ -225,7 +263,7 @@ public class ProfilePage extends AppCompatActivity {
 
                 // CANCEL REQUEST STATE
 
-                if(mCurrent_state.equals("req_sent")){
+                if (mCurrent_state.equals("req_sent")) {
                     mFriendRequestDatabase.child(mCurrent_user.getUid()).child(user_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -245,15 +283,17 @@ public class ProfilePage extends AppCompatActivity {
 
                 // REQUEST RECEIVED STATE
 
-                if(mCurrent_state.equals("req_received")){
+                if (mCurrent_state.equals("req_received")) {
+
+
 
                     final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
 
-                    mFriendDatabase.child(mCurrent_user.getUid()).child(user_id).setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    mFriendDatabase.child(mCurrent_user.getUid()).child(user_id).child("date").setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
 
-                            mFriendDatabase.child(user_id).child(mCurrent_user.getUid()).setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            mFriendDatabase.child(user_id).child(mCurrent_user.getUid()).child("date").setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 
@@ -267,6 +307,8 @@ public class ProfilePage extends AppCompatActivity {
                                                     mBtnAddFriend.setEnabled(true);
                                                     mCurrent_state = "friends";
                                                     mBtnAddFriend.setText("Remove Friend");
+                                                    mBtnFriendMap.setVisibility(View.VISIBLE);
+                                                    mBtnFriendMap.setText("View User Map");
 
 
                                                 }
@@ -276,40 +318,15 @@ public class ProfilePage extends AppCompatActivity {
                                     });
 
 
-
                                 }
                             });
 
                         }
                     });
-
                 }
 
             }
         });
-
-
-    }
-
-    private void selectNavigation(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.btmHome:
-                Intent intent = new Intent(this, MainActivity.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.btmLocation:
-                Intent intent1 = new Intent(this, NearbyLocations.class);
-                this.startActivity(intent1);
-                break;
-
-            case R.id.btmProfile:
-                Intent intent3 = new Intent(this, ProfilePage.class);
-                this.startActivity(intent3);
-                break;
-
-        }
     }
 
 
@@ -334,6 +351,7 @@ public class ProfilePage extends AppCompatActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
 
+
             case R.id.menuAllUsers:
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
@@ -344,15 +362,6 @@ public class ProfilePage extends AppCompatActivity {
                 this.startActivity(intent3);
                 break;
 
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfileActivity.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
 
         }
 
@@ -361,9 +370,24 @@ public class ProfilePage extends AppCompatActivity {
     }
 
 
+    private void selectNavigation(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.btmHome:
+                Intent intent = new Intent(this, MainActivity.class);
+                this.startActivity(intent);
+                break;
 
+            case R.id.btmLocation:
+                Intent intent1 = new Intent(this, NearbyLocations.class);
+                this.startActivity(intent1);
+                break;
 
+            case R.id.btmProfile:
+                Intent intent3 = new Intent(this, ProfileActivity.class);
+                this.startActivity(intent3);
+                break;
 
-
+        }
+    }
 }

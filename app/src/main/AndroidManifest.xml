@@ -31,15 +31,15 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         //android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".ChooseActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ChooseActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".ProfileActivity"
             android:parentActivityName=".MapsActivity" />
@@ -92,7 +92,9 @@
         <activity android:name=".ListOnline" />
         <activity
             android:name=".EventsMap"
-            android:label="@string/title_activity_events_map"></activity>
+            android:label="@string/title_activity_events_map" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".ViewUsersFriends"></activity>
     </application>
 
 </manifest>

@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText mPassword, mEmail, mConfirmPassword;
+    private EditText mPassword, mEmail, mConfirmPassword, mUsername;
     private Button mLogin, mRegister;
 
     private FirebaseAuth mAuth;
@@ -52,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
+        mUsername = (EditText) findViewById(R.id.username);
 
         mLogin = (Button) findViewById(R.id.btnLog);
         mRegister = (Button) findViewById(R.id.register);
@@ -74,6 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
+                final String username = mUsername.getText().toString();
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -92,10 +94,11 @@ public class RegisterActivity extends AppCompatActivity {
                             mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
 
                             HashMap<String, String> userMap = new HashMap<>();
+                            userMap.put("username", "username unknown");
                             userMap.put("name", "name unknown");
                             userMap.put("address", "address unknown");
                             userMap.put("image", "default");
-                            userMap.put("thumb_image", "default");
+                            //userMap.put("thumb_image", "default");
 
                             mDatabase.setValue(userMap);
 

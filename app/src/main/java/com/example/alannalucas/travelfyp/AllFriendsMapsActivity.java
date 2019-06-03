@@ -78,6 +78,8 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final String TAG = "MapsActivity";
 
+    private String name;
+    public ArrayList<String> locationlist = new ArrayList<String>();
 
     private FirebaseAuth mAuth;
     private DatabaseReference mFriendLocations;
@@ -85,6 +87,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private ImageView mPlacePicker, mPlaceInfo;
+    final String user_id = getIntent().getStringExtra("user_id");
 
 
     public ArrayList<String> friendlist = new ArrayList<String>();
@@ -111,6 +114,8 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
 
 
         ChildEventListener mChildEventListener;
+
+
 
         //getReference used to have "Locations" inside unsure if makes a diff yet
         //mLocations = FirebaseDatabase.getInstance().getReference();
@@ -156,9 +161,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
         });
 
 
-
-
-        LocationsList = (Button) findViewById(R.id.btnListLoc);
+        /*LocationsList = (Button) findViewById(R.id.btnListLoc);
         MoreInfo = (Button) findViewById(R.id.btnMoreInfo);
 
 
@@ -174,7 +177,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
         });
 
 
-        ImageView mPlacePicker = (ImageView) findViewById(R.id.place_picker);
+        ImageView mPlacePicker = (ImageView) findViewById(R.id.place_picker);*/
 
         mPlacePicker.setOnClickListener(new View.OnClickListener() {
 
@@ -230,6 +233,8 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = user.getUid();
 
+        final String user_id = getIntent().getStringExtra("user_id");
+
         //String test = mFriendLocations.child("Friends").child(userID).getKey();
 
         //   Toast.makeText(this, test, Toast.LENGTH_LONG).show();
@@ -251,13 +256,43 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
                 }
             }*/
 
-        mFriendLocations.child("Friends").child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        mFriendLocations.child("User Locations").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
+
+                    LocationInformation locInfo = s.getValue(LocationInformation.class);
+                    LatLng location = new LatLng(locInfo.latitude, locInfo.longitude);
+                    name = locInfo.name;
+
+
+                    //Toast.makeText(NearbyLocations.this, "toast1" + s.getKey() + s.getValue(), Toast.LENGTH_LONG).show();
+                    locationlist.add(s.getKey());
+                    findLocations(s.getKey());
+
+                    mMap.addMarker(new MarkerOptions().position(location).title(name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+
+
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                    //mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+                }
+                //Toast.makeText(NearbyLocations.this, "toast2" + Integer.toString(locationlist.size()), Toast.LENGTH_LONG).show();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        /*mFriendLocations.child("Friends").child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s:dataSnapshot.getChildren()){
 
                       LocationInformation user = s.getValue(LocationInformation.class);
-                      LatLng location = new LatLng(user.latitude, user.longitude);
+                       LatLng location = new LatLng(user.latitude, user.longitude);
 
                     Toast.makeText(AllFriendsMapsActivity.this, s.getKey() + s.getValue(), Toast.LENGTH_LONG).show();
                     friendlist.add(s.getKey());
@@ -279,7 +314,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
-        Toast.makeText(AllFriendsMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();
+        Toast.makeText(AllFriendsMapsActivity.this, Integer.toString(friendlist.size()), Toast.LENGTH_LONG).show();*/
 
 
         /*// Add a marker in Sydney and move the camera
@@ -306,39 +341,40 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
 
     }
 
-    /*public void findLocations(String friendID){
 
-        // for (int i =0; i<friendlist.size(); i++) {
-        //    String friendID = friendlist.get(i);
-        mFriendLocations.child(friendID).child("Locations").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()) {
-
-                    LocationInformation userlocation = s.getValue(LocationInformation.class);
-                    LatLng location = new LatLng(userlocation.latitude, userlocation.longitude);
-
-                    //Toast.makeText(FriendMapsActivity.this, Double.toString(userlocation.latitude), Toast.LENGTH_LONG).show();
+    public void findLocations(String friendID) {
 
 
-                    mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+        for (int i = 0; i < locationlist.size(); i++) {
+            friendID = locationlist.get(i);
+            mFriendLocations.child("User Locations").child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
 
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                    mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+                        LocationInformation userlocation = s.getValue(LocationInformation.class);
+                        LatLng location = new LatLng(userlocation.latitude, userlocation.longitude);
+
+                        //Toast.makeText(FriendMapsActivity.this, Double.toString(userlocation.latitude), Toast.LENGTH_LONG).show();
+
+
+                        mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                        //mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+                    }
                 }
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-    }*/
+                }
+            });
+        }
+    }
 
-
-
-    public void onMapSearch(View view) {
+    /*public void onMapSearch(View view) {
         EditText locationSearch = (EditText) findViewById(R.id.editSearch);
         String location = locationSearch.getText().toString();
         List<Address> addressList = null;
@@ -356,7 +392,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
             mMap.addMarker(new MarkerOptions().position(latLng).title("Searched Location"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         }
-    }
+    }*/
 
     public void onListLocation(View view) {
         Intent intent = new Intent(AllFriendsMapsActivity.this, ViewListedLocations.class);
@@ -441,6 +477,7 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
 
+
             case R.id.menuAllUsers:
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
@@ -451,15 +488,6 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
                 this.startActivity(intent3);
                 break;
 
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfilePage.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
 
         }
 

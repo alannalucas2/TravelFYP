@@ -30,7 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-public class AllUsers extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AllUsers extends AppCompatActivity {
 
     private RecyclerView recyclerUsers;
     private DatabaseReference usersDatabase;
@@ -47,7 +47,7 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
         usersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
-        mBtnAllFriendsMap = (Button) findViewById(R.id.btnAllFriendsMap);
+        //mBtnAllFriendsMap = (Button) findViewById(R.id.btnAllFriendsMap);
 
 
         recyclerUsers = (RecyclerView) findViewById(R.id.recyclerUsers);
@@ -68,14 +68,14 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
             }
         });
 
-        mBtnAllFriendsMap.setOnClickListener(new View.OnClickListener() {
+        /*mBtnAllFriendsMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AllUsers.this, FriendMapsActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
     }
 
@@ -145,48 +145,6 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
         adapter.startListening();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        switch (menuItem.getItemId()) {
-            case R.id.nav_profile:
-                Intent intent = new Intent(AllUsers.this, ProfileActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.nav_maps:
-                Intent intent2 = new Intent(AllUsers.this, NearbyLocations.class);
-                startActivity(intent2);
-                finish();
-                break;
-            case R.id.nav_users:
-                Intent intent3 = new Intent(AllUsers.this, AllUsers.class);
-                startActivity(intent3);
-                finish();
-                break;
-
-            case R.id.nav_share:
-                Toast.makeText(this, "Share", Toast.LENGTH_LONG).show();
-                break;
-
-            case R.id.nav_sendshare:
-                Toast.makeText(this, "Send", Toast.LENGTH_LONG).show();
-                break;
-
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    /*public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }*/
-
-
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         View mView;
 
@@ -249,6 +207,7 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
 
+
             case R.id.menuAllUsers:
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
@@ -259,20 +218,6 @@ public class AllUsers extends AppCompatActivity implements NavigationView.OnNavi
                 this.startActivity(intent3);
                 break;
 
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfilePage.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
-
-            case R.id.listOnline:
-                Intent intent4 = new Intent(this, ListOnline.class);
-                this.startActivity(intent4);
-                break;
 
         }
 

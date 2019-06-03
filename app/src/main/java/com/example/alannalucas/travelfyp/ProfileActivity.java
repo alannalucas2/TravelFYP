@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -41,67 +47,109 @@ import java.io.IOException;
 public class ProfileActivity extends AppCompatActivity {
 
 
-    TextView textName;
+    TextView mUsername, mAddress;
     private static final int CHOOSE_IMAGE = 101;
-    ImageView mImageView;
-    Button buttonSave;
+    ImageView mProfileImage;
+    Button mButtonEdit, buttonSave;
     EditText editName;
 
     Uri uriItemImage, resultUri;
     String profileImageUrl;
 
+    private BottomNavigationView mBottomNav;
+
+    DatabaseReference userDatabase;
     FirebaseAuth mAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.user_profile);
 
         mAuth = FirebaseAuth.getInstance();
 
-        mImageView = (ImageView) findViewById(R.id.imageView);
+        mProfileImage = (ImageView) findViewById(R.id.profileImage);
         buttonSave = (Button) findViewById(R.id.btnSave);
+        mButtonEdit = (Button) findViewById(R.id.btnEditProfile);
         editName = (EditText) findViewById(R.id.editName);
+        mUsername = (TextView) findViewById(R.id.txtUsername);
+        mAddress = (TextView) findViewById(R.id.txtAddress);
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
+        final FirebaseUser user = mAuth.getCurrentUser();
+        String userID = user.getUid();
+
+        userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Users users = dataSnapshot.getValue(Users.class);
+
+                    String name = users.getName();
+                    String username = users.getUsername();
+                    String address = users.getAddress();
+                    //String image = users.getImage();
+                    //String school = users.getSchool();
+
+
+
+                    mUsername.setText(username);
+                    mAddress.setText(address);
+                    //mProfileImage.setImageBitmap(image);
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        /*mProfileImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 showImageChooser();
+            }
+        });*/
+
+        /*mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectNavigation(item);
+                return true;
+            }
+        });*/
+
+
+        mButtonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UpdateProfile.class);
+                startActivity(intent);
             }
         });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        loadUserInformation();
+        //loadUserInformation();
 
-        findViewById(R.id.btnSave).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.btnSave).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveUserInformation();
             }
-        });
+        });*/
     }
 
-    private void loadUserInformation() {
-        FirebaseUser user = mAuth.getCurrentUser();
 
-        if (user != null) {
-            if (user.getPhotoUrl() != null) {
-                Glide.with(this).load(user.getPhotoUrl().toString())
-                        .into(mImageView);
-
-            }
-
-            if (user.getDisplayName() != null) {
-                editName.setText(user.getDisplayName());
-            }
-        }
-
-
-    }
 
 
     private void saveUserInformation() {
@@ -200,7 +248,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    mImageView.setImageBitmap(bitmap);
+                    mProfileImage.setImageBitmap(bitmap);
 
                     uploadImageToFirebaseStorage();
 
@@ -278,12 +326,13 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menuLogout:
                 FirebaseAuth.getInstance().signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
+
 
             case R.id.menuAllUsers:
                 Intent intent1 = new Intent(this, AllUsers.class);
@@ -295,20 +344,32 @@ public class ProfileActivity extends AppCompatActivity {
                 this.startActivity(intent3);
                 break;
 
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfileActivity.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
 
         }
 
 
         return true;
+    }
+
+    private void selectNavigation(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.btmHome:
+                Intent intent = new Intent(this, MainActivity.class);
+                this.startActivity(intent);
+                break;
+
+            case R.id.btmLocation:
+                Intent intent1 = new Intent(this, NearbyLocations.class);
+                this.startActivity(intent1);
+                break;
+
+            case R.id.btmProfile:
+                Intent intent3 = new Intent(this, ProfileActivity.class);
+                this.startActivity(intent3);
+                break;
+
+        }
     }
 
     private void showImageChooser() {
@@ -328,8 +389,15 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
 
-    public void DestinationsOnClick(View view) {
+    public void clickLoc(View view) {
         Intent intent = new Intent(ProfileActivity.this, ViewListedLocations.class);
+        startActivity(intent);
+        finish();
+
+    }
+
+    public void clickFriends(View view) {
+        Intent intent = new Intent(ProfileActivity.this, ViewUsersFriends.class);
         startActivity(intent);
         finish();
     }

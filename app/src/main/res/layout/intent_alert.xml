@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="200dp"
+    android:padding="30dp"
+    android:background="@color/colorPrimary"
+    tools:context=".NearbyLocations">
+
+
+    <TextView
+        android:id="@+id/ratingTxt"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:text="Would you like to leave TravelPin to visit The Ticketmaster Website?"/>
+
+
+
+</LinearLayout>

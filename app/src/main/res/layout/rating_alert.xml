@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="200dp"
+    android:padding="30dp"
+    android:background="@color/colorPrimary"
+    tools:context=".NearbyLocations">
+
+    <TextView
+        android:id="@+id/placeName"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:text="place name"/>
+
+    <TextView
+        android:id="@+id/ratingTxt"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Would you like to rate this location?"/>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressBackgroundTint="@color/white"
+        android:progressTint="@color/white"
+        style="@style/RatingBar"
+        android:numStars="5"
+        android:stepSize="0.5" />
+
+
+
+
+
+</LinearLayout>

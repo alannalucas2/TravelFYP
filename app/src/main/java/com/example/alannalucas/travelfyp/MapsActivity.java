@@ -167,7 +167,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-        LocationsList = (Button) findViewById(R.id.btnListLoc);
+       /* LocationsList = (Button) findViewById(R.id.btnListLoc);
         MoreInfo = (Button) findViewById(R.id.btnMoreInfo);
 
 
@@ -180,10 +180,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
 
-        ImageView mPlacePicker = (ImageView) findViewById(R.id.place_picker);
+        //ImageView mPlacePicker = (ImageView) findViewById(R.id.place_picker);
 
         mPlacePicker.setOnClickListener(new View.OnClickListener() {
 
@@ -299,9 +299,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
             public void onMapSearch(View view) {
-        EditText locationSearch = (EditText) findViewById(R.id.editSearch);
-        String location = locationSearch.getText().toString();
-        List<Address> addressList = null;
+        //EditText locationSearch = (EditText) findViewById(R.id.editSearch);
+        //String location = locationSearch.getText().toString();
+        /*List<Address> addressList = null;
 
         if (location != null || !location.equals("")) {
             Geocoder geocoder = new Geocoder(this);
@@ -315,7 +315,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             mMap.addMarker(new MarkerOptions().position(latLng).title("Searched Location"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        }
+        }*/
     }
 
     public void onListLocation(View view) {
@@ -411,6 +411,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
 
+
             case R.id.menuAllUsers:
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
@@ -421,20 +422,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 this.startActivity(intent3);
                 break;
 
-            case R.id.menuProfile:
-                Intent intent = new Intent(this, ProfilePage.class);
-                this.startActivity(intent);
-                break;
-
-            case R.id.menuLocation:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                this.startActivity(intent2);
-                break;
-
-            case R.id.listOnline:
-                Intent intent4 = new Intent(this, ListOnline.class);
-                this.startActivity(intent4);
-                break;
 
         }
 
