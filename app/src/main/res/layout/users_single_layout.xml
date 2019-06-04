@@ -35,7 +35,7 @@
         android:layout_marginTop="33dp"
         android:layout_marginEnd="58dp"
         android:text="Display Name"
-        android:textColor="@color/blue"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -60,7 +60,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="0dp"
             android:text="Locations: "
-            android:textColor="@color/blue"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
         <TextView
@@ -74,7 +74,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="0dp"
             android:text=""
-            android:textColor="@color/blue"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
     </LinearLayout>

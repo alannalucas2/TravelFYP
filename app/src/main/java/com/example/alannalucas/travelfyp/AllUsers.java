@@ -114,8 +114,9 @@ public class AllUsers extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(UserViewHolder holder, int position, Users model) {
                 // Bind the Chat object to the ChatHolder
-                holder.setName(model.name);
+                //holder.setName(model.name);
                 holder.setAddress(model.address);
+                holder.setUsername(model.username);
 
                 final String user_id = getRef(position).getKey();
 
@@ -154,15 +155,17 @@ public class AllUsers extends AppCompatActivity {
         }
 
 
-        public void setName(String name) {
+        public void setUsername(String username) {
             TextView userNameView = (TextView) mView.findViewById(R.id.userSingleName);
-            userNameView.setText(name);
+            userNameView.setText(username);
         }
 
         public void setAddress(String address) {
             TextView userAddressView = (TextView) mView.findViewById(R.id.userSingleAddress);
             userAddressView.setText(address);
         }
+
+
    }
 
     private void selectNavigation(MenuItem item) {
@@ -212,12 +215,6 @@ public class AllUsers extends AppCompatActivity {
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
                 break;
-
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
 
         }
 

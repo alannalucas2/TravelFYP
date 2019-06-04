@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/lightNavy"
+    android:background="@color/darkNavy"
     tools:context=".ViewListedLocations">
 
     <android.support.v7.widget.Toolbar
@@ -13,6 +13,7 @@
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:titleTextColor="@color/blue"
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.Toolbar>

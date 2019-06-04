@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:progressBackgroundTint="@color/white"
         android:progressTint="@color/white"
+        android:isIndicator="false"
         style="@style/RatingBar"
         android:numStars="5"
         android:stepSize="0.5" />

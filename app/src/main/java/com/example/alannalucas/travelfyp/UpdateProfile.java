@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +59,8 @@ public class UpdateProfile extends AppCompatActivity {
     private static final int CHOOSE_IMAGE = 101;
     private BottomNavigationView mBottomNav;
     Uri uriItemImage, resultUri;
+
+    private FirebaseAuth mAuth;
 
     private CircleImageView mProfileImage;
     private EditText mUsername, mAddress, mName;
@@ -154,6 +157,8 @@ public class UpdateProfile extends AppCompatActivity {
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_user);
 
 
+        //loadUserInformation();
+
 
         userDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -161,7 +166,8 @@ public class UpdateProfile extends AppCompatActivity {
 
                 String username = dataSnapshot.child("username").getValue().toString();
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getKey();
+                //String image = dataSnapshot.child("image").getValue().toString();
+                String image = String.valueOf(dataSnapshot.child("image").getValue());
                 String address = dataSnapshot.child("address").getValue().toString();
                 //String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
@@ -169,6 +175,13 @@ public class UpdateProfile extends AppCompatActivity {
                 mUsername.setText(username);
                 mAddress.setText(address);
 
+                /*Glide.with(UpdateProfile.this).load(user.getPhotoUrl().toString())
+                        .into(mProfileImage);
+
+                /*Glide.with(UpdateProfile.this)
+                        .using(new FirebaseImageLoader())
+                        .load(storageReference)
+                        .into(imageView);*/
                 //Picasso.get().load(image).into(mProfileImage);
 
             }
@@ -181,6 +194,22 @@ public class UpdateProfile extends AppCompatActivity {
 
 
     }
+
+    /*private void loadUserInformation() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userID = user.getUid();
+
+        if (userID != null) {
+            if (user.getPhotoUrl() != null) {
+                Glide.with(this).load(user.getPhotoUrl().toString())
+                        .into(mProfileImage);
+
+            }
+
+        }
+
+
+    }*/
 
     private void showImageChooser() {
         Intent intent = new Intent();
@@ -432,12 +461,6 @@ public class UpdateProfile extends AppCompatActivity {
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
                 break;
-
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
 
         }
 

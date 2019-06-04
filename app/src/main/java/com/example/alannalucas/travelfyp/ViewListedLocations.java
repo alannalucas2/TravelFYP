@@ -58,6 +58,7 @@ public class ViewListedLocations extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Saved Locations");
 
         mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -161,6 +162,7 @@ public class ViewListedLocations extends AppCompatActivity {
                 holder.setName(model.name);
                 holder.setRating(model.rating);
                 holder.setAddress(model.address);
+                holder.setUsername(model.username);
 
                 //holder.setRating(model.rating);
 
@@ -198,6 +200,11 @@ public class ViewListedLocations extends AppCompatActivity {
         public void setRating(float rating){
             TextView textRating = (TextView) mView.findViewById(R.id.ratingStamp);
             textRating.setText(Float.toString(rating));
+        }
+
+        public void setUsername(String username){
+            TextView textUsername = (TextView) mView.findViewById(R.id.usernameStamp);
+            textUsername.setText(username);
         }
 
             /*public void setRating(float rating){
@@ -258,12 +265,6 @@ public class ViewListedLocations extends AppCompatActivity {
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
                 break;
-
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
 
         }
 

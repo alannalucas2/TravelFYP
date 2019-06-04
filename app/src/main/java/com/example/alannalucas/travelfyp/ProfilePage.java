@@ -65,8 +65,8 @@ public class ProfilePage extends AppCompatActivity {
 
 
         mTotalFriends = (TextView) findViewById(R.id.totalFriends);
-        mDisplayAddress = (TextView) findViewById(R.id.displayName);
-        mDisplayName = (TextView) findViewById(R.id.displayAddress);
+        mDisplayAddress = (TextView) findViewById(R.id.displayAddress);
+        mDisplayName = (TextView) findViewById(R.id.displayName);
         mBtnAddFriend = (Button) findViewById(R.id.btnAddFriend);
         mBtnDeclineFriend = (Button) findViewById(R.id.btnDeclineFriend);
         mBtnFriendMap = (Button) findViewById(R.id.btnFriendMap);
@@ -100,6 +100,8 @@ public class ProfilePage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mBtnDeclineFriend.setVisibility(View.INVISIBLE);
+
 
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
         mFriendRequestDatabase = FirebaseDatabase.getInstance().getReference().child("FriendRequest");
@@ -110,7 +112,7 @@ public class ProfilePage extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                String display_name = dataSnapshot.child("name").getValue().toString();
+                String display_name = dataSnapshot.child("username").getValue().toString();
                 String address = dataSnapshot.child("address").getValue().toString();
 
                 mDisplayName.setText(display_name);
@@ -155,6 +157,21 @@ public class ProfilePage extends AppCompatActivity {
                                             public void onClick(View v) {
 
                                                 Intent intent = new Intent(ProfilePage.this, FriendMapsActivity.class);
+                                                intent.putExtra("user_id", user_id);
+                                                intent.putExtra("username", username);
+                                                startActivity(intent);
+                                                finish();
+
+                                            }
+                                        });
+
+                                        mBtnFriendMap.setText("View User's Locations");
+                                        mBtnFriendMap.setVisibility(View.VISIBLE);
+                                        mBtnFriendMap.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                Intent intent = new Intent(ProfilePage.this, ViewFriendsLocList.class);
                                                 intent.putExtra("user_id", user_id);
                                                 intent.putExtra("username", username);
                                                 startActivity(intent);
@@ -325,6 +342,30 @@ public class ProfilePage extends AppCompatActivity {
                     });
                 }
 
+                if (mCurrent_state.equals("friends")){
+
+                    mFriendDatabase.child(mCurrent_user.getUid()).child(user_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                            mFriendDatabase.child(user_id).child(mCurrent_user.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    mBtnAddFriend.setEnabled(true);
+                                    mCurrent_state = "not_friends";
+                                    mBtnAddFriend.setText("Send Friend Request");
+                                    mBtnFriendMap.setVisibility(View.INVISIBLE);
+                                    mBtnDeclineFriend.setVisibility(View.INVISIBLE);
+
+
+                                }
+                            });
+
+                        }
+                    });
+
+                }
+
             }
         });
     }
@@ -356,12 +397,6 @@ public class ProfilePage extends AppCompatActivity {
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
                 break;
-
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
 
         }
 

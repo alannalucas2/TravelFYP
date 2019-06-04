@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/lightNavy"
-    tools:context=".ViewUsersFriends">
+    tools:context=".ViewFriendsLocList">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:titleTextColor="@color/blue"
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.Toolbar>

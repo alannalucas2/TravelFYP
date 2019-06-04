@@ -10,13 +10,14 @@ public class LocationInformation {
     public String placeID;
     public String time;
     public String address;
+    public String username;
 
 
     public LocationInformation(){
     }
 
 
-    public LocationInformation(String name, double latitude,double longitude, float rating, String placeID, String time, String address){
+    public LocationInformation(String name, double latitude,double longitude, float rating, String placeID, String time, String address, String username){
         //this.id = id;
         this.name = name;
         this.latitude = latitude;
@@ -25,6 +26,7 @@ public class LocationInformation {
         this.placeID = placeID;
         this.time = time;
         this.address = address;
+        this.username = username;
 
     }
 
@@ -80,6 +82,14 @@ public class LocationInformation {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getAddress() {

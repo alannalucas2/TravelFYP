@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -76,23 +77,15 @@ public class  MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         mAuth = FirebaseAuth.getInstance();
         locationsDatabase = FirebaseDatabase.getInstance().getReference().child("User Locations");
-        friendsDatabase = FirebaseDatabase.getInstance().getReference().child("User Locations");
+        friendsDatabase = FirebaseDatabase.getInstance().getReference();
         friendsLocationsDatabase = FirebaseDatabase.getInstance().getReference().child("User Locations");
 
-        /*btnTest = (Button) findViewById(R.id.btnTestClass);
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
-                startActivity(intent);
-            }
-        });*/
 
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = user.getUid();
-
         userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -157,6 +150,7 @@ public class  MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Explore");
 
         //getTimeAgo();
 
@@ -194,11 +188,11 @@ public class  MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //startListening();
-        getUserIds();
+        startListening();
 
     }
 
-    private void getUserIds(){
+    /*private void getUserIds(){
         //locationReference = FirebaseDatabase.getInstance().getReference().child("User Locations");
         locationsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -206,6 +200,7 @@ public class  MainActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot locations : dataSnapshot.getChildren()){
                         startListening(locations.getKey());
+                        //Toast.makeText(this, "locations  " + locations.getKey(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -215,14 +210,13 @@ public class  MainActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
-    public void startListening(String key) {
+    public void startListening() {
 
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("User Locations")
-                .child(key)
+                .child("AllUsersLocations")
                 .orderByChild("time")
                 .limitToLast(20);
 
@@ -252,7 +246,7 @@ public class  MainActivity extends AppCompatActivity {
                 holder.setRating(model.rating);
                 holder.setAddress(model.address);
                 holder.setTime(model.time);
-                //holder.setUsername(model.mUsername);
+                holder.setUsername(model.username);
 
                 //holder.setRating(model.rating);
 
@@ -428,12 +422,6 @@ public class  MainActivity extends AppCompatActivity {
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
                 break;
-
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
 
         }
 

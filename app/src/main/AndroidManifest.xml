@@ -94,7 +94,10 @@
             android:name=".EventsMap"
             android:label="@string/title_activity_events_map" />
         <activity android:name=".TestActivity" />
-        <activity android:name=".ViewUsersFriends"></activity>
+        <activity android:name=".ViewFriendsLocList" />
+        <activity
+            android:name=".ExploreLocation"
+            android:label="@string/title_activity_explore_location"></activity>
     </application>
 
 </manifest>

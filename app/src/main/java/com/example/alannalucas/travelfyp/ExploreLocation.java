@@ -127,7 +127,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class NearbyLocations extends AppCompatActivity implements
+public class ExploreLocation extends AppCompatActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -172,6 +172,8 @@ public class NearbyLocations extends AppCompatActivity implements
     AutocompleteSupportFragment places_fragment;
 
 
+    private String username;
+    private double passLat, passLong;
     private TextView responseView;
     //private FieldSelector fieldSelector;
     private RequestQueue mQueue;
@@ -214,6 +216,12 @@ public class NearbyLocations extends AppCompatActivity implements
         };
 
 
+        username = getIntent().getStringExtra("username");
+        passLat = Double.parseDouble(getIntent().getStringExtra("latitude"));
+        passLong = Double.parseDouble(getIntent().getStringExtra("longitde"));
+
+
+
 
         Places.initialize(getApplicationContext(), apiKey);
 
@@ -254,7 +262,7 @@ public class NearbyLocations extends AppCompatActivity implements
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
-                        //Toast.makeText(NearbyLocations.this, "long click" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(ExploreLocation.this, "long click" , Toast.LENGTH_LONG).show();
 
                         alertWebsiteIntent();
 
@@ -273,7 +281,7 @@ public class NearbyLocations extends AppCompatActivity implements
             public void onClick(View v) {
                 mMap.clear();
 
-                if (ContextCompat.checkSelfPermission(NearbyLocations.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(ExploreLocation.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
 
                     buildGoogleApiClient();
@@ -449,7 +457,7 @@ public class NearbyLocations extends AppCompatActivity implements
                 saveLocations.child("User Locations").child(userID).child(name).setValue(locInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(NearbyLocations.this, "Location saved", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ExploreLocation.this, "Location saved", Toast.LENGTH_LONG).show();
                         // mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
                         alertRating();
                     }
@@ -457,7 +465,7 @@ public class NearbyLocations extends AppCompatActivity implements
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(NearbyLocations.this, "Error location not saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ExploreLocation.this, "Error location not saved", Toast.LENGTH_LONG).show();
 
                             }
                         });
@@ -473,7 +481,7 @@ public class NearbyLocations extends AppCompatActivity implements
 
     public void alertManualEnter(){
 
-        final View v = LayoutInflater.from(NearbyLocations.this).inflate(R.layout.manualenteralert, null);
+        final View v = LayoutInflater.from(ExploreLocation.this).inflate(R.layout.manualenteralert, null);
         final EditText manualName = (EditText) v.findViewById(R.id.manName);
         final EditText manualAddress = (EditText) v.findViewById(R.id.manAddress);
         final RatingBar mRatingBar = (RatingBar) v.findViewById(R.id.ratingBar);
@@ -481,39 +489,39 @@ public class NearbyLocations extends AppCompatActivity implements
         AlertDialog.Builder alertBuilder3 = new AlertDialog.Builder(this);
         alertBuilder3.setView(v).setCancelable(true)
                 .setPositiveButton("Save Location", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                String name = manualName.getText().toString().trim();
-                String address = manualAddress.getText().toString().trim();
-                rating = mRatingBar.getRating();
+                        String name = manualName.getText().toString().trim();
+                        String address = manualAddress.getText().toString().trim();
+                        rating = mRatingBar.getRating();
 
-                FirebaseUser user = mAuth.getCurrentUser();
-                String userID = user.getUid();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String userID = user.getUid();
 
                 /*saveRating = FirebaseDatabase.getInstance().getReference().child("User Locations").child(userID).child(name);
                 saveRating.child("rating").setValue(rateValue);
                 saveRating.child("name").setValue(name);
                 saveRating.child("address").setValue(address);*/
 
-                LocationInformation locInfo = new LocationInformation(name, latitude, longitude, rating, placeID, time, address, mUsername);
+                        LocationInformation locInfo = new LocationInformation(name, latitude, longitude, rating, placeID, time, address, mUsername);
 
-                saveLocations.child("AllUsersLocations").child(name).setValue(locInfo);
-                saveLocations.child("User Locations").child(userID).child(name).setValue(locInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(NearbyLocations.this, "Location Saved", Toast.LENGTH_LONG).show();
-                    }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
+                        saveLocations.child("AllUsersLocations").child(name).setValue(locInfo);
+                        saveLocations.child("User Locations").child(userID).child(name).setValue(locInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(NearbyLocations.this, "Error location not saved", Toast.LENGTH_LONG).show();
-
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(ExploreLocation.this, "Location Saved", Toast.LENGTH_LONG).show();
                             }
-                        });
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(ExploreLocation.this, "Error location not saved", Toast.LENGTH_LONG).show();
+
+                                    }
+                                });
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -528,7 +536,7 @@ public class NearbyLocations extends AppCompatActivity implements
 
     public void alertWebsiteIntent(){
 
-        final View v = LayoutInflater.from(NearbyLocations.this).inflate(R.layout.intent_alert, null);
+        final View v = LayoutInflater.from(ExploreLocation.this).inflate(R.layout.intent_alert, null);
 
         AlertDialog.Builder alertBuilder2 = new AlertDialog.Builder(this);
         alertBuilder2.setView(v).setCancelable(true).setPositiveButton("Yes, Continue", new DialogInterface.OnClickListener() {
@@ -554,7 +562,7 @@ public class NearbyLocations extends AppCompatActivity implements
 
     public void alertRating(){
 
-        final View v = LayoutInflater.from(NearbyLocations.this).inflate(R.layout.rating_alert, null);
+        final View v = LayoutInflater.from(ExploreLocation.this).inflate(R.layout.rating_alert, null);
         final RatingBar mRatingBar = (RatingBar) v.findViewById(R.id.ratingBar);
 
         final TextView textName = (TextView) v.findViewById(R.id.placeName);
@@ -567,7 +575,7 @@ public class NearbyLocations extends AppCompatActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         rateValue = mRatingBar.getRating();
-                        //Toast.makeText(NearbyLocations.this, "rating test1:  " + rateValue, Toast.LENGTH_LONG).show();
+                        Toast.makeText(ExploreLocation.this, "rating test1:  " + rateValue, Toast.LENGTH_LONG).show();
 
                         FirebaseUser user = mAuth.getCurrentUser();
                         String userID = user.getUid();
@@ -709,7 +717,16 @@ public class NearbyLocations extends AppCompatActivity implements
         mMap = googleMap;
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.setPadding(0, 0, 0, 300);
+
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(passLong,passLat))
+                .title("Hello world"))
+                .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+
+
+        //mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+
+
 
 
         //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION))
@@ -720,7 +737,7 @@ public class NearbyLocations extends AppCompatActivity implements
             buildGoogleApiClient();
 
             mMap.setMyLocationEnabled(true);
-            //mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
         }
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -738,6 +755,8 @@ public class NearbyLocations extends AppCompatActivity implements
 
             }
         });
+
+
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -759,7 +778,7 @@ public class NearbyLocations extends AppCompatActivity implements
 
                 //getMarkerInfo();
 
-                //Toast.makeText(NearbyLocations.this, name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ExploreLocation.this, name, Toast.LENGTH_SHORT).show();
                 return false;
 
 
@@ -778,16 +797,16 @@ public class NearbyLocations extends AppCompatActivity implements
             @Override
             public View getInfoContents(Marker marker) {
 
-                LinearLayout info = new LinearLayout(NearbyLocations.this);
+                LinearLayout info = new LinearLayout(ExploreLocation.this);
                 info.setOrientation(LinearLayout.VERTICAL);
 
-                TextView title = new TextView(NearbyLocations.this);
+                TextView title = new TextView(ExploreLocation.this);
                 title.setTextColor(Color.BLACK);
                 title.setGravity(Gravity.CENTER);
                 title.setTypeface(null, Typeface.BOLD);
                 title.setText(marker.getTitle());
 
-                TextView snippet = new TextView(NearbyLocations.this);
+                TextView snippet = new TextView(ExploreLocation.this);
                 snippet.setTextColor(Color.GRAY);
                 snippet.setText(marker.getSnippet());
 

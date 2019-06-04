@@ -483,12 +483,6 @@ public class AllFriendsMapsActivity extends AppCompatActivity implements OnMapRe
                 this.startActivity(intent1);
                 break;
 
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
-
         }
 
 

@@ -13,10 +13,6 @@
         android:id="@+id/menuAllUsers"
         app:showAsAction="never" />
 
-    <item
-        android:title="Account Details"
-        android:id="@+id/accountDetails"
-        app:showAsAction="never" />
 
 
 </menu>

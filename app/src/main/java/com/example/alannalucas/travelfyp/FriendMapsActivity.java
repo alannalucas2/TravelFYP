@@ -81,8 +81,9 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     private Button LocationsList, MoreInfo;
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final String TAG = "MapsActivity";
+    private String mUsername;
 
-    private String name, selPlace, placeID, time, address;
+    private String name, selPlace, placeID, time, address, username, user_id;
     private double latitude, longitude;
     private float rateValue, rating;
     private BottomNavigationView mBottomNav;
@@ -90,7 +91,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
     private ImageButton mHeart;
     private FirebaseAuth mAuth;
-    private DatabaseReference mFriendLocations, saveLocations, saveRating;
+    private DatabaseReference mFriendLocations, saveLocations, saveRating, userReference;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -121,8 +122,8 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
         });
 
 
-        final String user_id = getIntent().getStringExtra("user_id");
-        final String username = getIntent().getStringExtra("username");
+        user_id = getIntent().getStringExtra("user_id");
+        username = getIntent().getStringExtra("username");
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -132,7 +133,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle(username + "'s Locations");
+        getSupportActionBar().setTitle(username + "'s Locations");
 
 
         ChildEventListener mChildEventListener;
@@ -165,6 +166,26 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             }
         };
 
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userID = user.getUid();
+        userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+        userReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Users users = dataSnapshot.getValue(Users.class);
+
+                    mUsername = users.getUsername();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         mFriendLocations.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -188,7 +209,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
 
-                LocationInformation locInfo = new LocationInformation(name, latitude, longitude, rating, placeID, time, address);
+                LocationInformation locInfo = new LocationInformation(name, latitude, longitude, rating, placeID, time, address, mUsername);
 
 
                 FirebaseUser user = mAuth.getCurrentUser();
@@ -628,12 +649,6 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
                 Intent intent1 = new Intent(this, AllUsers.class);
                 this.startActivity(intent1);
                 break;
-
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
 
         }
 

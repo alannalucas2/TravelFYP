@@ -65,90 +65,45 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/rel2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_weight="1"
-        android:layout_below="@+id/rel1"
-        android:background="@color/colorPrimary">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:orientation="horizontal"
-                    android:onClick="clickLoc"
-                    android:weightSum="2">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/border2"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Locations"
-                            android:textColor="@color/aqua"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/border2"
-                        android:gravity="center"
-                        android:onClick="clickFriends"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Friends"
-                            android:textColor="@color/aqua"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
 
     <Button
         android:id="@+id/btnEditProfile"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="7dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/rel2"
+        android:layout_below="@+id/rel1"
         android:background="@drawable/roundbuttonlight"/>
+
+    <Button
+        android:id="@+id/btnViewLocations"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="View Locations"
+        android:onClick="clickLoc"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnEditProfile"
+        android:background="@drawable/roundbuttonlight"/>
+
+    <Button
+        android:id="@+id/btnViewUsers"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="View All Users"
+        android:onClick="clickFriend"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnViewLocations"
+        android:background="@drawable/roundbuttonlight"/>
+
 
     <RelativeLayout
         android:layout_width="match_parent"

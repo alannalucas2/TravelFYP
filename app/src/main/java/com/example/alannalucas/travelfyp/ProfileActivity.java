@@ -37,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -76,6 +77,15 @@ public class ProfileActivity extends AppCompatActivity {
         mUsername = (TextView) findViewById(R.id.txtUsername);
         mAddress = (TextView) findViewById(R.id.txtAddress);
 
+        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectNavigation(item);
+                return true;
+            }
+        });
+
         final FirebaseUser user = mAuth.getCurrentUser();
         String userID = user.getUid();
 
@@ -89,13 +99,14 @@ public class ProfileActivity extends AppCompatActivity {
                     String name = users.getName();
                     String username = users.getUsername();
                     String address = users.getAddress();
-                    //String image = users.getImage();
-                    //String school = users.getSchool();
 
+                    String image = users.getImage();
+                    //Picasso.get().load(image).into(mProfileImage);
 
 
                     mUsername.setText(username);
                     mAddress.setText(address);
+                    //mProfileImage.setImageBitmap(image);
                     //mProfileImage.setImageBitmap(image);
 
 
@@ -339,12 +350,6 @@ public class ProfileActivity extends AppCompatActivity {
                 this.startActivity(intent1);
                 break;
 
-            case R.id.accountDetails:
-                Intent intent3 = new Intent(this, UpdateProfile.class);
-                this.startActivity(intent3);
-                break;
-
-
         }
 
 
@@ -396,11 +401,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    public void clickFriends(View view) {
-        Intent intent = new Intent(ProfileActivity.this, ViewUsersFriends.class);
+    public void clickFriend(View view){
+        Intent intent = new Intent(ProfileActivity.this, AllUsers.class);
         startActivity(intent);
         finish();
     }
+
 }
 
 
