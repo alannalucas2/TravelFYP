@@ -62,7 +62,7 @@ public class ViewFriendsLocList extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(username + "'s Locations");
+        getSupportActionBar().setTitle("Users's Locations");
 
         mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -218,40 +218,6 @@ public class ViewFriendsLocList extends AppCompatActivity {
             }*/
 
     }
-
-
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userID = user.getUid();
-
-
-
-        databaseLocations.child(userID).child("Locations").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                locationList.clear();
-                for(DataSnapshot locationSnapshot: dataSnapshot.getChildren()){
-                    LocationInformation location = locationSnapshot.getValue(LocationInformation.class);
-
-                    locationList.add(location);
-
-                }
-
-                ListedLocations adapter = new ListedLocations(ViewListedLocations.this, locationList);
-                listViewLocations.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
-
 
 
     @Override

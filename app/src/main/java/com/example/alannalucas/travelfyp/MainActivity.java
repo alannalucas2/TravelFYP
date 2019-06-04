@@ -152,32 +152,7 @@ public class  MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Explore");
 
-        //getTimeAgo();
 
-        /*mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                locationsDatabase.child("rating").setValue(rating);
-
-                DatabaseReference mDriverRatingDb = FirebaseDatabase.getInstance().getReference().child("User Locations").child(userID).child(name);
-                mDriverRatingDb.child("rating").setValue(rating);
-            }
-        });*/
-
-        //placesClient = Places.createClient(this);
-
-
-        /*btn_get_photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(TextUtils.isEmpty(placeId)){
-                    Toast.makeText(MainActivity.this, "Place id must not be null", Toast.LENGTH_SHORT).show();
-                    return;
-                }else{
-                    getPhotoAndDetail(placeId);
-                }
-            }
-        });*/
 
 
     }
@@ -192,25 +167,6 @@ public class  MainActivity extends AppCompatActivity {
 
     }
 
-    /*private void getUserIds(){
-        //locationReference = FirebaseDatabase.getInstance().getReference().child("User Locations");
-        locationsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange( DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot locations : dataSnapshot.getChildren()){
-                        startListening(locations.getKey());
-                        //Toast.makeText(this, "locations  " + locations.getKey(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
 
     public void startListening() {
 
@@ -263,64 +219,6 @@ public class  MainActivity extends AppCompatActivity {
     }
 
 
-    /*private void getLocationInfo(String key){
-        DatabaseReference postInfoRef = FirebaseDatabase.getInstance().getReference().child("User Locations").child(key);
-        postInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    String userID = dataSnapshot.getKey().toString();
-                    String name = "";
-                    String address = "";
-                    double latitude= 0;
-                    double longitude = 0;
-                    float rating = 0;
-                    String time = "";
-                    String placeID = "";
-
-                    if(dataSnapshot.child("name").getValue()!=null){
-                        name = dataSnapshot.child("name").getValue().toString();
-                    }
-                    if(dataSnapshot.child("address").getValue()!=null){
-                        address = dataSnapshot.child("address").getValue().toString();
-                    }
-
-                    if(dataSnapshot.child("latitude").getValue()!=null){
-                        latitude = Double.parseDouble(dataSnapshot.child("latitude").getValue().toString());
-                    }
-                    if(dataSnapshot.child("longitude").getValue()!=null){
-                        longitude = Double.parseDouble(dataSnapshot.child("longitude").getValue().toString());
-                    }
-
-                    if(dataSnapshot.child("time").getValue()!=null){
-                        time = dataSnapshot.child("time").getValue().toString();
-                    }
-
-                    if(dataSnapshot.child("rating").getValue()!=null){
-                        rating = Float.parseFloat(dataSnapshot.child("rating").getValue().toString());
-                    }
-                    LocationInformation location = new LocationInformation( name,  latitude, longitude,  rating,  placeID,  time,  address);
-                    feedResults.add(location);
-                    feedList.add(location);
-                    feedAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private ArrayList<LocationInformation> getDataSetHistory(){
-        return feedResults;
-    }*/
-
-
-
-
-
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         View mView;
 
@@ -355,46 +253,6 @@ public class  MainActivity extends AppCompatActivity {
         }
     }
 
-            /*public void setRating(float rating){
-                RatingBar ratingBar = (RatingBar) mView.findViewById(R.id.displayRatingBar);
-                //ratingBar.setRating(Integer.valueOf(child.getValue().toString()));
-
-            }
-
-    }
-
-
-
-    /*private void getTimeAgo(final String time){
-        FirebaseUser user = mAuth.getCurrentUser();
-        final String userID = user.getUid();
-        locationsDatabase = FirebaseDatabase.getInstance().getReference().child("User Locations").child(userID);
-
-        locationsDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                String format = DateFormat.getDateTimeInstance().format(new Date());
-                Date past = format.parse(time);
-                Date now = new Date();
-
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
-
-
-    public void getDateInMillis() {
-
-        Date now = new Date();
-        //String src = DateUtils.getRelativeDateTimeString(this, now.getTime(), DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

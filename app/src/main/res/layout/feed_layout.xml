@@ -28,7 +28,7 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
-        android:text="elisha1"
+        android:text="username"
         android:textStyle="bold"
         android:textColor="@color/white" />
 

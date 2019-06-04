@@ -65,9 +65,6 @@
             android:name=".MarkerOptions"
             android:parentActivityName=".MapsActivity" />
         <activity
-            android:name=".SaveLocation"
-            android:parentActivityName=".MapsActivity" />
-        <activity
             android:name=".ViewListedLocations"
             android:parentActivityName=".MapsActivity" />
         <activity
@@ -81,23 +78,11 @@
             android:name=".FriendMapsActivity"
             android:label="@string/title_activity_friend_maps"
             android:parentActivityName=".MapsActivity" />
-        <activity android:name=".AllFriendsMapsActivity" />
         <activity
             android:name=".NearbyLocations"
             android:label="@string/title_activity_nearby_locations"
             android:parentActivityName=".MapsActivity" />
-        <activity
-            android:name=".NavigationBarActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ListOnline" />
-        <activity
-            android:name=".EventsMap"
-            android:label="@string/title_activity_events_map" />
-        <activity android:name=".TestActivity" />
         <activity android:name=".ViewFriendsLocList" />
-        <activity
-            android:name=".ExploreLocation"
-            android:label="@string/title_activity_explore_location"></activity>
     </application>
 
 </manifest>

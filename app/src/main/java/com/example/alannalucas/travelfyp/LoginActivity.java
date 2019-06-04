@@ -92,15 +92,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth.addAuthStateListener(firebaseAuthListener);
     }
 
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth.getCurrentUser() == null){
-            finish();
-            startActivity(new Intent(this, ProfileActivity.class));
-        }
-    }*/
-
     @Override
     protected void onStop(){
         super.onStop();

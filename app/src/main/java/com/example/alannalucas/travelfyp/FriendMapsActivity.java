@@ -80,7 +80,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     private static final int Request_User_Location_Code = 99;
     private Button LocationsList, MoreInfo;
     private static final int PLACE_PICKER_REQUEST = 1;
-    private static final String TAG = "MapsActivity";
+    private static final String TAG = "MapActivity";
     private String mUsername;
 
     private String name, selPlace, placeID, time, address, username, user_id;
@@ -133,7 +133,7 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(username + "'s Locations");
+        getSupportActionBar().setTitle("Users's Locations");
 
 
         ChildEventListener mChildEventListener;
@@ -323,33 +323,6 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-
-
-        /*mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-
-                mHeart.setVisibility(View.VISIBLE);
-
-                latitude = marker.getPosition().latitude;
-                longitude = marker.getPosition().longitude;
-                name = marker.getTitle();
-                placeID = marker.getId();
-                address = marker.getSnippet();
-
-                time = DateFormat.getDateTimeInstance().format(new Date());
-                //long miliTime = time.getTime
-
-
-
-                //getMarkerInfo();
-
-                Toast.makeText(FriendMapsActivity.this, name, Toast.LENGTH_SHORT).show();
-                return false;
-
-
-            }
-        });*/
 
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -580,21 +553,6 @@ public class FriendMapsActivity extends AppCompatActivity implements OnMapReadyC
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-    /*private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(@NonNull PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                Log.d(TAG, "onResult: Place query did not complete successfully: " + places.getStatus().toString());
-                places.release();
-                return;
-            }
-
-            final Place place = places.get(0);
-
-
-        }
-    };*/
 
 
     @Override

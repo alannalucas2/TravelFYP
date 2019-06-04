@@ -145,16 +145,13 @@ public class NearbyLocations extends AppCompatActivity implements
     private LatLng selPlaceLatLng;
     private String apiKey = "AIzaSyAiXcwMQY9v2ba4GvxLPsF_G-FPUJA5DUU";
     private BottomNavigationView mBottomNav;
-    private static final String TAG = "MapsActivity";
+    private static final String TAG = "MapActivity";
 
 
-    private String searchedPlace, mUsername;
-    private RatingBar mRatingBar;
-    private TextView ratingDisplay;
+    private String mUsername;
     private float rateValue, rating;
 
 
-    //private static Button search;
 
     final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
 
@@ -164,7 +161,6 @@ public class NearbyLocations extends AppCompatActivity implements
     private DatabaseReference saveLocations, mSavedLocations, saveRating, userReference, saveRating1;
 
     private int ProximityRadius = 2500;
-    //private PlaceAutocompleteFragment placeAutocompleteFragment;
 
     private static final int PLACE_PICKER_REQUEST = 123;
     private PlacesClient placesClient;
@@ -189,8 +185,6 @@ public class NearbyLocations extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_locations);
 
-        //FirebaseUser user = mAuth.getCurrentUser();
-        //String userID = user.getUid();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             checkUserLocationPermission();
@@ -218,9 +212,6 @@ public class NearbyLocations extends AppCompatActivity implements
         Places.initialize(getApplicationContext(), apiKey);
 
         initPlaces();
-        //setupPlaceAutocomplete();
-        //RatingBar mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
-        //TextView ratingDisplay = (TextView) findViewById(R.id.displayRating);
 
 
         //events
@@ -804,23 +795,6 @@ public class NearbyLocations extends AppCompatActivity implements
 
     }
 
-    /*public void getMarkerInfo(){
-
-        List<HashMap<String, String>> nearbyPlacesList = null;
-
-            for (int i=0; i<nearbyPlacesList.size(); i++){
-                MarkerOptions markerOptions = new MarkerOptions();
-
-                HashMap<String, String> googleNearbyPlace = nearbyPlacesList.get(i);
-                vicinity = googleNearbyPlace.get("vicinity");
-                address = googleNearbyPlace.get("adr_address");
-
-            }
-
-
-    }*/
-
-
 
     private void selectNavigation(MenuItem item) {
 
@@ -954,53 +928,6 @@ public class NearbyLocations extends AppCompatActivity implements
         switch (v.getId())
         {
 
-            /*case R.id.search_address:
-                AutocompleteSupportFragment searchedPlace = (AutocompleteSupportFragment) findViewById(R.id.location_search);
-                String address = searchedPlace.getText().toString();
-
-                List<Address> addressList = null;
-                MarkerOptions userMarkerOptions = new MarkerOptions();
-
-                if (!TextUtils.isEmpty(address))
-                {
-                    Geocoder geocoder = new Geocoder(this);
-
-                    try
-                    {
-                        addressList = geocoder.getFromLocationName(address, 6);
-
-                        if (addressList != null)
-                        {
-                            for (int i=0; i<addressList.size(); i++)
-                            {
-                                Address userAddress = addressList.get(i);
-                                LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
-
-                                userMarkerOptions.position(latLng);
-                                userMarkerOptions.title(address);
-                                userMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                                mMap.addMarker(userMarkerOptions);
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
-                            }
-                        }
-                        else
-                        {
-                            Toast.makeText(this, "Location not found...", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                else
-                {
-                    Toast.makeText(this, "please write any location name...", Toast.LENGTH_SHORT).show();
-                }
-                break;*/
-
-
             case R.id.fab_action_hotel:
                 //mMap.clear();
                 String url = getUrl(latitude, longitude, hotel);
@@ -1076,8 +1003,12 @@ public class NearbyLocations extends AppCompatActivity implements
 
         eventsList = new ArrayList<Event>();
 
+        final String currentcountry = "IE";
+
         String url = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=IE&apikey=OBfaBREyutatiLUjh3XJ5oW51KAQwYCQ&size=50";
-        //String url = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=IE&apikey=pJx9cAKP7Jrcf1SXAFU2ejqXXKFvGTJF&size=30";
+        //String url = "https://app.ticketmaster.eu/discovery/v2/events.json?countryCode=FR&apikey=OBfaBREyutatiLUjh3XJ5oW51KAQwYCQ&size=30";
+        //String url = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=GB&apikey=OBfaBREyutatiLUjh3XJ5oW51KAQwYCQ&size=30";
+
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -1182,17 +1113,6 @@ public class NearbyLocations extends AppCompatActivity implements
                 events = events + eventNames + "\n";
                 visited[i] = true;
 
-//            LatLng venue = new LatLng(latitude, longitude);
-//            MarkerOptions marker = new MarkerOptions();
-
-//            marker.position(venue).title(eventsList.get(i).getName());
-//            marker.position(venue).snippet(eventsList.get(i).getVenue());
-//            mMap.addMarker(marker);
-
-
-//            Marker venueMarker = new Marker();
-//            mMap.setOnMarkerClickListener(venueMarker);
-
                 for (int j = 0; j < eventsList.size(); j++) {
 
                     if ((i != j) && (!visited[j])) {
@@ -1203,27 +1123,9 @@ public class NearbyLocations extends AppCompatActivity implements
                             events = events + eventsList.get(j).getName() + " " + date + "\n";
 
                             visited[j] = true;
-                            //     marker.position(venue).title(eventNames);
-                            //    marker.position(venue).snippet(eventsList.get(j).getVenue());
-                            //   mMap.addMarker(marker);
-                            //  Marker locationMarker = mMap.addMarker(marker);
-                            //  locationMarker.showInfoWindow();
                         }
-                        /*else {
-                            date = eventsList.get(j).getDate();
-
-                            marker.position(venue).title(eventsList.get(j).getName() + " " + date);
-                            marker.position(venue).snippet(eventsList.get(j).getVenue());
-                            Marker locationMarker = mMap.addMarker(marker);
-                            locationMarker.showInfoWindow();
-
-
-                        } */
                     }
                 }
-
-                //mMap.addMarker(new MarkerOptions().position(location).title(userlocation.name)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
 
                 marker.position(venue).title(venueName);
                 marker.position(venue).snippet(events);

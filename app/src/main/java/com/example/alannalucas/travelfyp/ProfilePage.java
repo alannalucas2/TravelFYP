@@ -41,7 +41,7 @@ public class ProfilePage extends AppCompatActivity {
     Button mBtnAddFriend, mBtnDeclineFriend, mBtnFriendMap;
 
 
-    private String mCurrent_state;
+    private String mCurrent_state, aCurrent_user;
 
     private BottomNavigationView mBottomNav;
 
@@ -62,6 +62,8 @@ public class ProfilePage extends AppCompatActivity {
 
 
         final String user_id = getIntent().getStringExtra("user_id");
+
+
 
 
         mTotalFriends = (TextView) findViewById(R.id.totalFriends);
@@ -108,6 +110,8 @@ public class ProfilePage extends AppCompatActivity {
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
         mCurrent_user = FirebaseAuth.getInstance().getCurrentUser();
 
+
+
         mUsersDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -150,7 +154,7 @@ public class ProfilePage extends AppCompatActivity {
                                         mCurrent_state = "friends";
                                         mBtnAddFriend.setText("Remove Friend");
 
-
+                                        mBtnDeclineFriend.setVisibility(View.VISIBLE);
                                         mBtnDeclineFriend.setText("View User's Map");
                                         mBtnDeclineFriend.setOnClickListener(new View.OnClickListener() {
                                             @Override

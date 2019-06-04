@@ -216,40 +216,6 @@ public class ViewListedLocations extends AppCompatActivity {
     }
 
 
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userID = user.getUid();
-
-
-
-        databaseLocations.child(userID).child("Locations").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                locationList.clear();
-                for(DataSnapshot locationSnapshot: dataSnapshot.getChildren()){
-                    LocationInformation location = locationSnapshot.getValue(LocationInformation.class);
-
-                    locationList.add(location);
-
-                }
-
-                ListedLocations adapter = new ListedLocations(ViewListedLocations.this, locationList);
-                listViewLocations.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
-
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

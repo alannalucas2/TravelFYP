@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private DatabaseReference mDatabase;
+    private String email, username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, UpdateProfile.class);
                     startActivity(intent);
+                    //ntent.putExtra("username", username);
+                    //startActivity(intent);
                     finish();
                     return;
                 }
@@ -52,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
-        mUsername = (EditText) findViewById(R.id.username);
+        //mUsername = (EditText) findViewById(R.id.username);
 
         mLogin = (Button) findViewById(R.id.btnLog);
         mRegister = (Button) findViewById(R.id.register);
@@ -73,9 +76,14 @@ public class RegisterActivity extends AppCompatActivity {
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = mEmail.getText().toString();
-                final String password = mPassword.getText().toString();
-                final String username = mUsername.getText().toString();
+                email = mEmail.getText().toString();
+                password = mPassword.getText().toString();
+                //username = mUsername.getText().toString();
+
+                //Intent profileIntent = new Intent(AllUsers.this, ProfilePage.class);
+
+
+
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -94,9 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
                             mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
 
                             HashMap<String, String> userMap = new HashMap<>();
-                            userMap.put("username", "username unknown");
-                            userMap.put("name", "name unknown");
-                            userMap.put("address", "address unknown");
+                            userMap.put("username", "");
+                            userMap.put("name", "");
+                            userMap.put("address", "");
                             userMap.put("image", "default");
                             //userMap.put("thumb_image", "default");
 

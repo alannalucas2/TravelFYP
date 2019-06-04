@@ -72,6 +72,7 @@ public class UpdateProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_update);
 
+        final String pUsername = getIntent().getStringExtra("username");
 
 
         mProfileImage = (CircleImageView) findViewById(R.id.updateProfileImage);
@@ -157,9 +158,6 @@ public class UpdateProfile extends AppCompatActivity {
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_user);
 
 
-        //loadUserInformation();
-
-
         userDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -171,18 +169,20 @@ public class UpdateProfile extends AppCompatActivity {
                 String address = dataSnapshot.child("address").getValue().toString();
                 //String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
+                if(name == ""){
+                    mName.setText("Enter Name");
+                }
+                if(username == ""){
+                    mName.setText("Enter Username");
+                }
+                if(address == ""){
+                    mName.setText("Enter Address");
+                }
+
+
                 mName.setText(name);
                 mUsername.setText(username);
                 mAddress.setText(address);
-
-                /*Glide.with(UpdateProfile.this).load(user.getPhotoUrl().toString())
-                        .into(mProfileImage);
-
-                /*Glide.with(UpdateProfile.this)
-                        .using(new FirebaseImageLoader())
-                        .load(storageReference)
-                        .into(imageView);*/
-                //Picasso.get().load(image).into(mProfileImage);
 
             }
 
@@ -195,21 +195,6 @@ public class UpdateProfile extends AppCompatActivity {
 
     }
 
-    /*private void loadUserInformation() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userID = user.getUid();
-
-        if (userID != null) {
-            if (user.getPhotoUrl() != null) {
-                Glide.with(this).load(user.getPhotoUrl().toString())
-                        .into(mProfileImage);
-
-            }
-
-        }
-
-
-    }*/
 
     private void showImageChooser() {
         Intent intent = new Intent();
@@ -270,148 +255,6 @@ public class UpdateProfile extends AppCompatActivity {
         });
     }
 
-
-    /*public void uploadImageToFirebaseStorage() {
-        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
-
-
-        if (uriItemImage != null) {
-            profileImageRef.putFile(resultUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //progressBar.setVisibility(View.GONE);
-                            profileImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    profileImageUrl = uri.toString();
-                                    Toast.makeText(getApplicationContext(), "Image Upload Successful", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-        }
-    }*/
-
-
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CHOOSE_IMAGE && resultCode == RESULT_OK) {
-
-            Uri imageUri = data.getData();
-
-            CropImage.activity(imageUri)
-                    .setCropShape(CropImageView.CropShape.OVAL)
-                    .start(this);
-
-            //Toast.makeText()
-        }
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-
-
-
-                StorageReference filepath = mImageStorage.child("profile_images").child(random() + ".jpg");
-                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()){
-
-                            String download_url = task.getResult().getStorage().getDownloadUrl().toString();
-                            userDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(UpdateProfile.this, "Successful upload", Toast.LENGTH_LONG).show();
-
-                                    }
-                                }
-                            });
-
-                            Toast.makeText(UpdateProfile.this, "Successful upload", Toast.LENGTH_LONG).show();
-
-                        }else{
-                            Toast.makeText(UpdateProfile.this, "Error uploading", Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-                });
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
-    }*/
-
-
-
-
-    /*public void uploadImageToFirebaseStorage() {
-        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
-
-
-        if (uriProfileImage != null) {
-            profileImageRef.putFile(uriProfileImage)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //progressBar.setVisibility(View.GONE);
-                            profileImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    profileImageUrl = uri.toString();
-                                    Toast.makeText(getApplicationContext(), "Image Upload Successful", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-        }
-    }*/
-
-
-    public static String random(){
-        Random generator = new Random();
-        StringBuilder randomStringBuilder = new StringBuilder();
-        int randomLength = generator.nextInt(1);
-        char tempChar;
-        for (int i = 0; i< randomLength; i++){
-            tempChar = (char) (generator.nextInt(96)+32);
-            randomStringBuilder.append(tempChar);
-        }
-        return randomStringBuilder.toString();
-    }
 
     private void selectNavigation(MenuItem item) {
 

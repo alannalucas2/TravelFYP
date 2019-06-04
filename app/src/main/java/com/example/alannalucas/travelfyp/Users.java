@@ -5,6 +5,7 @@ public class Users {
     public String username;
     public String name;
     public String address;
+    //public String email;
     public String image;
 
 
